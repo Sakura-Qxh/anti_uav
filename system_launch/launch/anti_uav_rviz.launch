@@ -1,0 +1,16 @@
+<launch>
+  <arg name="uav_count" default="6"/>
+  <arg name="target_count" default="6"/>
+  <arg name="interceptor_count" default="6"/>
+  <arg name="global_map_topic" default="/global_map"/>
+  <arg name="rviz_config" default="$(find system_launch)/rviz/anti_uav_default.rviz"/>
+
+  <include file="$(find system_launch)/launch/anti_uav.launch">
+    <arg name="uav_count" value="$(arg uav_count)"/>
+    <arg name="target_count" value="$(arg target_count)"/>
+    <arg name="interceptor_count" value="$(arg interceptor_count)"/>
+    <arg name="global_map_topic" value="$(arg global_map_topic)"/>
+    <arg name="rviz" value="true"/>
+    <arg name="rviz_config" value="$(arg rviz_config)"/>
+  </include>
+</launch>

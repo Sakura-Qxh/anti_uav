@@ -13,6 +13,8 @@ low_threat_interceptors: 1
 interceptor_speed: 30.0
 max_assignment_distance: 300.0
 stale_timeout: 2.0
+interceptor_odom_timeout: 2.0
+interceptor_prefix: "/interceptor_"
 
 cost_distance_weight: 0.55
 cost_time_weight: 0.35

@@ -30,6 +30,9 @@ private:
         pnh_.param<std::string>("control_mode", control_mode_, "rviz_click");
         pnh_.param<std::string>("clicked_point_topic", clicked_point_topic_, "/clicked_point");
         pnh_.param<std::string>("output_goal_topic", output_goal_topic_, "/target_scenario/attack_goal");
+        pnh_.param<std::string>("target_prefix", target_prefix_, "/target_");
+        pnh_.param<int>("target_count", target_count_, 1);
+        pnh_.param<bool>("publish_per_target_goals", publish_per_target_goals_, true);
         pnh_.param<double>("target_goal_altitude", target_goal_altitude_, 8.0);
 
         std::vector<double> default_goal;
@@ -42,6 +45,9 @@ private:
             attack_goal_.x = 0.0;
             attack_goal_.y = 0.0;
             attack_goal_.z = target_goal_altitude_;
+        }
+        if (target_count_ <= 0) {
+            target_count_ = 1;
         }
     }
 
@@ -56,6 +62,15 @@ private:
             output_goal_topic_,
             1,
             true);
+
+        if (publish_per_target_goals_) {
+            for (int i = 0; i < target_count_; ++i) {
+                const std::string topic =
+                    target_prefix_ + std::to_string(i) + "/planning_goal";
+                target_goal_pubs_.push_back(
+                    nh_.advertise<geometry_msgs::PoseStamped>(topic, 1, true));
+            }
+        }
 
         marker_pub_ = nh_.advertise<visualization_msgs::Marker>(
             "/target_scenario/attack_goal_marker",
@@ -89,6 +104,17 @@ private:
         return goal;
     }
 
+    geometry_msgs::PoseStamped makeTargetGoal(int target_index,
+                                              const ros::Time& stamp) const {
+        (void)target_index;
+        geometry_msgs::PoseStamped goal;
+        goal.header.stamp = stamp;
+        goal.header.frame_id = world_frame_;
+        goal.pose.position = attack_goal_;
+        goal.pose.orientation.w = 1.0;
+        return goal;
+    }
+
     visualization_msgs::Marker makeAttackGoalMarker(const ros::Time& stamp) const {
         visualization_msgs::Marker marker;
         marker.header.stamp = stamp;
@@ -111,6 +137,9 @@ private:
 
     void publishAttackGoal(const ros::Time& stamp) {
         attack_goal_pub_.publish(makeAttackGoal(stamp));
+        for (int i = 0; i < static_cast<int>(target_goal_pubs_.size()); ++i) {
+            target_goal_pubs_[i].publish(makeTargetGoal(i, stamp));
+        }
         marker_pub_.publish(makeAttackGoalMarker(stamp));
     }
 
@@ -127,12 +156,16 @@ private:
     std::string control_mode_ = "rviz_click";
     std::string clicked_point_topic_ = "/clicked_point";
     std::string output_goal_topic_ = "/target_scenario/attack_goal";
+    std::string target_prefix_ = "/target_";
+    int target_count_ = 1;
+    bool publish_per_target_goals_ = true;
     double target_goal_altitude_ = 8.0;
 
     geometry_msgs::Point attack_goal_;
 
     ros::Subscriber clicked_point_sub_;
     ros::Publisher attack_goal_pub_;
+    std::vector<ros::Publisher> target_goal_pubs_;
     ros::Publisher marker_pub_;
 };
 

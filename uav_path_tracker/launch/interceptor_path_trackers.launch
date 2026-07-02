@@ -1,0 +1,87 @@
+<launch>
+  <arg name="config_file" default="$(find uav_path_tracker)/config/path_tracker.yaml"/>
+
+  <group ns="interceptor_0">
+    <node pkg="uav_path_tracker" type="path_tracker_node" name="path_tracker" output="screen">
+      <rosparam file="$(arg config_file)" command="load"/>
+      <param name="role" value="interceptor"/>
+      <param name="uav_id" value="0"/>
+      <rosparam param="init_pos">[-40.0, -30.0, 6.0]</rosparam>
+      <remap from="~planned_path" to="/interceptor_0/planned_path"/>
+      <remap from="~odom" to="/interceptor_0/odom"/>
+      <remap from="~trajectory" to="/interceptor_0/trajectory"/>
+      <remap from="~guidance_cmd" to="/interceptor_0/guidance_cmd"/>
+      <remap from="~marker" to="/interceptor_0/marker"/>
+    </node>
+  </group>
+
+  <group ns="interceptor_1">
+    <node pkg="uav_path_tracker" type="path_tracker_node" name="path_tracker" output="screen">
+      <rosparam file="$(arg config_file)" command="load"/>
+      <param name="role" value="interceptor"/>
+      <param name="uav_id" value="1"/>
+      <rosparam param="init_pos">[-40.0, -18.0, 6.0]</rosparam>
+      <remap from="~planned_path" to="/interceptor_1/planned_path"/>
+      <remap from="~odom" to="/interceptor_1/odom"/>
+      <remap from="~trajectory" to="/interceptor_1/trajectory"/>
+      <remap from="~guidance_cmd" to="/interceptor_1/guidance_cmd"/>
+      <remap from="~marker" to="/interceptor_1/marker"/>
+    </node>
+  </group>
+
+  <group ns="interceptor_2">
+    <node pkg="uav_path_tracker" type="path_tracker_node" name="path_tracker" output="screen">
+      <rosparam file="$(arg config_file)" command="load"/>
+      <param name="role" value="interceptor"/>
+      <param name="uav_id" value="2"/>
+      <rosparam param="init_pos">[-40.0, -6.0, 6.0]</rosparam>
+      <remap from="~planned_path" to="/interceptor_2/planned_path"/>
+      <remap from="~odom" to="/interceptor_2/odom"/>
+      <remap from="~trajectory" to="/interceptor_2/trajectory"/>
+      <remap from="~guidance_cmd" to="/interceptor_2/guidance_cmd"/>
+      <remap from="~marker" to="/interceptor_2/marker"/>
+    </node>
+  </group>
+
+  <group ns="interceptor_3">
+    <node pkg="uav_path_tracker" type="path_tracker_node" name="path_tracker" output="screen">
+      <rosparam file="$(arg config_file)" command="load"/>
+      <param name="role" value="interceptor"/>
+      <param name="uav_id" value="3"/>
+      <rosparam param="init_pos">[-40.0, 6.0, 6.0]</rosparam>
+      <remap from="~planned_path" to="/interceptor_3/planned_path"/>
+      <remap from="~odom" to="/interceptor_3/odom"/>
+      <remap from="~trajectory" to="/interceptor_3/trajectory"/>
+      <remap from="~guidance_cmd" to="/interceptor_3/guidance_cmd"/>
+      <remap from="~marker" to="/interceptor_3/marker"/>
+    </node>
+  </group>
+
+  <group ns="interceptor_4">
+    <node pkg="uav_path_tracker" type="path_tracker_node" name="path_tracker" output="screen">
+      <rosparam file="$(arg config_file)" command="load"/>
+      <param name="role" value="interceptor"/>
+      <param name="uav_id" value="4"/>
+      <rosparam param="init_pos">[-40.0, 18.0, 6.0]</rosparam>
+      <remap from="~planned_path" to="/interceptor_4/planned_path"/>
+      <remap from="~odom" to="/interceptor_4/odom"/>
+      <remap from="~trajectory" to="/interceptor_4/trajectory"/>
+      <remap from="~guidance_cmd" to="/interceptor_4/guidance_cmd"/>
+      <remap from="~marker" to="/interceptor_4/marker"/>
+    </node>
+  </group>
+
+  <group ns="interceptor_5">
+    <node pkg="uav_path_tracker" type="path_tracker_node" name="path_tracker" output="screen">
+      <rosparam file="$(arg config_file)" command="load"/>
+      <param name="role" value="interceptor"/>
+      <param name="uav_id" value="5"/>
+      <rosparam param="init_pos">[-40.0, 30.0, 6.0]</rosparam>
+      <remap from="~planned_path" to="/interceptor_5/planned_path"/>
+      <remap from="~odom" to="/interceptor_5/odom"/>
+      <remap from="~trajectory" to="/interceptor_5/trajectory"/>
+      <remap from="~guidance_cmd" to="/interceptor_5/guidance_cmd"/>
+      <remap from="~marker" to="/interceptor_5/marker"/>
+    </node>
+  </group>
+</launch>

@@ -40,6 +40,8 @@ struct TargetState {
 struct InterceptorState {
     int id = 0;
     geometry_msgs::Point position;
+    ros::Time last_odom_time;
+    bool has_odom = false;
     bool assigned = false;
     int assigned_target = -1;
 };
@@ -70,6 +72,8 @@ public:
         pnh_.param<double>("interceptor_speed", interceptor_speed_, 30.0);
         pnh_.param<double>("max_assignment_distance", max_assignment_distance_, 300.0);
         pnh_.param<double>("stale_timeout", stale_timeout_, 2.0);
+        pnh_.param<double>("interceptor_odom_timeout", interceptor_odom_timeout_, 2.0);
+        pnh_.param<std::string>("interceptor_prefix", interceptor_prefix_, "/interceptor_");
         pnh_.param<double>("cost_distance_weight", cost_distance_weight_, 0.55);
         pnh_.param<double>("cost_time_weight", cost_time_weight_, 0.35);
         pnh_.param<double>("cost_threat_weight", cost_threat_weight_, 0.45);
@@ -115,6 +119,7 @@ private:
     void createRosInterfaces() {
         estimate_subs_.clear();
         threat_subs_.clear();
+        interceptor_odom_subs_.clear();
 
         for (int i = 0; i < target_count_; ++i) {
             const std::string estimate_topic = "/target_" + std::to_string(i) + "/estimate";
@@ -134,6 +139,14 @@ private:
         ranking_sub_ = nh_.subscribe<std_msgs::String>("/threat/ranking", 10,
                                                        &CooperativeAssignmentNode::rankingCallback,
                                                        this);
+        for (int i = 0; i < interceptor_count_; ++i) {
+            const std::string odom_topic =
+                interceptor_prefix_ + std::to_string(i) + "/odom";
+            interceptor_odom_subs_.push_back(nh_.subscribe<nav_msgs::Odometry>(
+                odom_topic, 10, [this, i](const nav_msgs::Odometry::ConstPtr& msg) {
+                    interceptorOdomCallback(msg, i);
+                }));
+        }
         result_pub_ = nh_.advertise<std_msgs::String>("/assignment/result", 10);
         marker_pub_ = nh_.advertise<visualization_msgs::MarkerArray>("/assignment/markers", 1);
     }
@@ -158,6 +171,17 @@ private:
 
     void rankingCallback(const std_msgs::String::ConstPtr& msg) {
         latest_ranking_text_ = msg->data;
+    }
+
+    void interceptorOdomCallback(const nav_msgs::Odometry::ConstPtr& msg,
+                                 int interceptor_index) {
+        if (interceptor_index < 0 || interceptor_index >= interceptor_count_) {
+            return;
+        }
+        interceptors_[interceptor_index].position = msg->pose.pose.position;
+        interceptors_[interceptor_index].last_odom_time =
+            msg->header.stamp.isZero() ? ros::Time::now() : msg->header.stamp;
+        interceptors_[interceptor_index].has_odom = true;
     }
 
     void timerCallback(const ros::TimerEvent&) {
@@ -230,6 +254,9 @@ private:
             if (interceptor.assigned) {
                 continue;
             }
+            if (!isInterceptorFresh(interceptor, ros::Time::now())) {
+                continue;
+            }
 
             const double cost = assignmentCost(interceptor, target);
             if (std::isfinite(cost)) {
@@ -258,6 +285,14 @@ private:
             interceptor.assigned_target = target_id;
             target.assigned_interceptors.push_back(interceptor.id);
         }
+    }
+
+    bool isInterceptorFresh(const InterceptorState& interceptor,
+                            const ros::Time& now) const {
+        if (!interceptor.has_odom) {
+            return true;
+        }
+        return (now - interceptor.last_odom_time).toSec() <= interceptor_odom_timeout_;
     }
 
     double assignmentCost(const InterceptorState& interceptor, const TargetState& target) const {
@@ -423,6 +458,8 @@ private:
     double interceptor_speed_ = 30.0;
     double max_assignment_distance_ = 300.0;
     double stale_timeout_ = 2.0;
+    double interceptor_odom_timeout_ = 2.0;
+    std::string interceptor_prefix_ = "/interceptor_";
     double cost_distance_weight_ = 0.55;
     double cost_time_weight_ = 0.35;
     double cost_threat_weight_ = 0.45;
@@ -434,6 +471,7 @@ private:
     std::vector<InterceptorState> interceptors_;
     std::vector<ros::Subscriber> estimate_subs_;
     std::vector<ros::Subscriber> threat_subs_;
+    std::vector<ros::Subscriber> interceptor_odom_subs_;
     ros::Subscriber ranking_sub_;
     ros::Publisher result_pub_;
     ros::Publisher marker_pub_;
