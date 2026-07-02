@@ -1,0 +1,43 @@
+<launch>
+  <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
+    <arg name="uav_ns" value="target_0"/>
+  </include>
+  <include file="$(find system_launch)/launch/ego_planner_unit.launch">
+    <arg name="uav_ns" value="target_0"/>
+  </include>
+
+  <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
+    <arg name="uav_ns" value="target_1"/>
+  </include>
+  <include file="$(find system_launch)/launch/ego_planner_unit.launch">
+    <arg name="uav_ns" value="target_1"/>
+  </include>
+
+  <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
+    <arg name="uav_ns" value="target_2"/>
+  </include>
+  <include file="$(find system_launch)/launch/ego_planner_unit.launch">
+    <arg name="uav_ns" value="target_2"/>
+  </include>
+
+  <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
+    <arg name="uav_ns" value="target_3"/>
+  </include>
+  <include file="$(find system_launch)/launch/ego_planner_unit.launch">
+    <arg name="uav_ns" value="target_3"/>
+  </include>
+
+  <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
+    <arg name="uav_ns" value="target_4"/>
+  </include>
+  <include file="$(find system_launch)/launch/ego_planner_unit.launch">
+    <arg name="uav_ns" value="target_4"/>
+  </include>
+
+  <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
+    <arg name="uav_ns" value="target_5"/>
+  </include>
+  <include file="$(find system_launch)/launch/ego_planner_unit.launch">
+    <arg name="uav_ns" value="target_5"/>
+  </include>
+</launch>

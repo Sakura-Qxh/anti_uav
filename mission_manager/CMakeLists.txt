@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(target_scenario_generator)
+project(mission_manager)
 
 add_compile_options(-std=c++14)
 
@@ -10,14 +10,13 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 catkin_package()
-
 include_directories(${catkin_INCLUDE_DIRS})
 
-add_executable(target_attack_goal_node src/target_attack_goal_node.cpp)
-add_dependencies(target_attack_goal_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(target_attack_goal_node ${catkin_LIBRARIES})
+add_executable(mission_manager_node src/mission_manager_node.cpp)
+add_dependencies(mission_manager_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(mission_manager_node ${catkin_LIBRARIES})
 
-install(TARGETS target_attack_goal_node
+install(TARGETS mission_manager_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

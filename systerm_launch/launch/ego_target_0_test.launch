@@ -1,0 +1,16 @@
+<launch>
+  <arg name="uav_ns" default="target_0"/>
+
+  <include file="$(find target_scenario_generator)/launch/target_scenario.launch"/>
+  <include file="$(find mission_manager)/launch/mission_manager.launch">
+    <arg name="target_count" value="1"/>
+  </include>
+
+  <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
+    <arg name="uav_ns" value="$(arg uav_ns)"/>
+  </include>
+
+  <include file="$(find system_launch)/launch/ego_planner_unit.launch">
+    <arg name="uav_ns" value="$(arg uav_ns)"/>
+  </include>
+</launch>

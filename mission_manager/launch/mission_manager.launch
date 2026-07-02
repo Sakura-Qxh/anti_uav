@@ -1,0 +1,12 @@
+<launch>
+  <arg name="config_file" default="$(find mission_manager)/config/mission_manager.yaml"/>
+  <arg name="target_count" default="6"/>
+
+  <node pkg="mission_manager"
+        type="mission_manager_node"
+        name="mission_manager_node"
+        output="screen">
+    <rosparam file="$(arg config_file)" command="load"/>
+    <param name="target_count" value="$(arg target_count)"/>
+  </node>
+</launch>

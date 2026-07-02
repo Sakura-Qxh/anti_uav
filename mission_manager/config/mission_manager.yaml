@@ -1,0 +1,7 @@
+world_frame: "world"
+target_count: 6
+publish_rate: 5.0
+formation_radius: 4.0
+spread_target_goals: true
+attack_goal_topic: "/attack_goal"
+target_prefix: "/target_"

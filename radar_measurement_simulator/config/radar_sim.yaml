@@ -1,15 +1,11 @@
 world_frame: "world"
 target_count: 6
-
 position_noise_std: 0.5
 velocity_noise_std: 0.2
-
-random_drop_prob: 0.10
-outlier_prob: 0.03
-outlier_position_jump: 8.0
-
+random_drop_prob: 0.05
+outlier_prob: 0.02
+outlier_position_jump: 6.0
 enable_burst_loss: true
-burst_loss_prob: 0.02
-burst_loss_duration: 1.0
-
+burst_loss_prob: 0.01
+burst_loss_duration: 0.5
 marker_scale: 0.35

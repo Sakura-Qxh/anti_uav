@@ -35,7 +35,7 @@ add_dependencies(radar_measurement_node
 
 target_link_libraries(radar_measurement_node
   ${catkin_LIBRARIES}
-  /usr/local/lib/libboost_system.so
+  ${Boost_LIBRARIES}
 )
 
 install(TARGETS radar_measurement_node

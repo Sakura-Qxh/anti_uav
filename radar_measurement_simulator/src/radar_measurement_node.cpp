@@ -182,8 +182,8 @@ private:
     std::vector<TargetMeasurementState> targets_;
     std::vector<ros::Subscriber> truth_subs_;
     std::vector<ros::Publisher> measurement_pubs_;
-    std::vector<nav_msgs::Odometry> latest_measurements_ = std::vector<nav_msgs::Odometry>(16);
-    std::vector<bool> latest_valid_ = std::vector<bool>(16, false);
+    std::vector<nav_msgs::Odometry> latest_measurements_;
+    std::vector<bool> latest_valid_;
     ros::Publisher marker_pub_;
 };
 

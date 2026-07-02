@@ -37,7 +37,7 @@ add_dependencies(target_tracking_node
 
 target_link_libraries(target_tracking_node
   ${catkin_LIBRARIES}
-  /usr/local/lib/libboost_system.so
+  ${Boost_LIBRARIES}
 )
 
 install(TARGETS target_tracking_node

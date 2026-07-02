@@ -34,7 +34,7 @@ add_dependencies(cooperative_assignment_node
 
 target_link_libraries(cooperative_assignment_node
   ${catkin_LIBRARIES}
-  /usr/local/lib/libboost_system.so
+  ${Boost_LIBRARIES}
 )
 
 install(TARGETS cooperative_assignment_node

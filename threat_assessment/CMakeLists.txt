@@ -34,7 +34,7 @@ add_dependencies(threat_assessment_node
 
 target_link_libraries(threat_assessment_node
   ${catkin_LIBRARIES}
-  /usr/local/lib/libboost_system.so
+  ${Boost_LIBRARIES}
 )
 
 install(TARGETS threat_assessment_node

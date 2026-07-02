@@ -1,11 +1,10 @@
 <launch>
-  <arg name="config_file"
-       default="$(find target_scenario_generator)/config/target_scenarios.yaml"/>
-
-  <rosparam file="$(arg config_file)" command="load" ns="/target_motion_node"/>
+  <arg name="config_file" default="$(find target_scenario_generator)/config/target_scenario.yaml"/>
 
   <node pkg="target_scenario_generator"
-        type="target_motion_node"
-        name="target_motion_node"
-        output="screen"/>
+        type="target_attack_goal_node"
+        name="target_attack_goal_node"
+        output="screen">
+    <rosparam file="$(arg config_file)" command="load"/>
+  </node>
 </launch>

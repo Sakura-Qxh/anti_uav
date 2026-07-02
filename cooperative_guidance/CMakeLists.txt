@@ -35,7 +35,7 @@ add_dependencies(cooperative_guidance_node
 
 target_link_libraries(cooperative_guidance_node
   ${catkin_LIBRARIES}
-  /usr/local/lib/libboost_system.so
+  ${Boost_LIBRARIES}
 )
 
 install(TARGETS cooperative_guidance_node

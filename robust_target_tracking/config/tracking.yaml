@@ -1,21 +1,14 @@
 world_frame: "world"
 target_count: 6
 update_rate: 50.0
-
 process_noise_position: 0.05
 process_noise_velocity: 0.5
 measurement_noise_position: 0.5
 measurement_noise_velocity: 0.2
-
 initial_position_variance: 2.0
 initial_velocity_variance: 5.0
-
 gating_distance: 8.0
 max_prediction_gap: 2.0
-
 prediction_horizon: 2.0
 prediction_dt: 0.2
 path_max_points: 300
-
-estimate_marker_scale: 0.55
-prediction_marker_scale: 0.08

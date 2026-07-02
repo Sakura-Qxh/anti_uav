@@ -1,0 +1,26 @@
+<launch>
+  <arg name="rviz" default="true"/>
+  <arg name="rviz_config" default="$(find system_launch)/rviz/anti_uav_ego.rviz"/>
+
+  <include file="$(find target_scenario_generator)/launch/target_scenario.launch"/>
+
+  <include file="$(find mission_manager)/launch/mission_manager.launch">
+    <arg name="target_count" value="6"/>
+  </include>
+
+  <include file="$(find system_launch)/launch/targets_ego.launch"/>
+  <include file="$(find system_launch)/launch/interceptors_ego.launch"/>
+
+  <include file="$(find radar_measurement_simulator)/launch/radar_measurement.launch"/>
+  <include file="$(find robust_target_tracking)/launch/target_tracking.launch"/>
+  <include file="$(find threat_assessment)/launch/threat_assessment.launch"/>
+  <include file="$(find cooperative_assignment)/launch/cooperative_assignment.launch"/>
+  <include file="$(find cooperative_guidance)/launch/cooperative_guidance.launch"/>
+
+  <node if="$(arg rviz)"
+        pkg="rviz"
+        type="rviz"
+        name="rviz"
+        args="-d $(arg rviz_config)"
+        output="screen"/>
+</launch> 

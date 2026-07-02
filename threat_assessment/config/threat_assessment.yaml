@@ -1,0 +1,17 @@
+world_frame: "world"
+target_count: 6
+update_rate: 10.0
+protected_center: [0.0, 0.0, 0.0]
+protected_radius: 5.0
+max_assessment_distance: 120.0
+max_target_speed: 45.0
+max_approach_speed: 45.0
+safe_altitude: 25.0
+critical_altitude: 3.0
+max_time_to_go: 20.0
+weight_distance: 0.25
+weight_speed: 0.20
+weight_approach: 0.25
+weight_altitude: 0.15
+weight_time_to_go: 0.15
+stale_timeout: 2.0
