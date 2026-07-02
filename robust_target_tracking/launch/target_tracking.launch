@@ -1,0 +1,10 @@
+<launch>
+  <arg name="config_file" default="$(find robust_target_tracking)/config/tracking.yaml"/>
+
+  <rosparam file="$(arg config_file)" command="load" ns="/target_tracking_node"/>
+
+  <node pkg="robust_target_tracking"
+        type="target_tracking_node"
+        name="target_tracking_node"
+        output="screen"/>
+</launch>

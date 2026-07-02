@@ -1,0 +1,10 @@
+<launch>
+  <arg name="config_file" default="$(find cooperative_assignment)/config/assignment.yaml"/>
+
+  <rosparam file="$(arg config_file)" command="load" ns="/cooperative_assignment_node"/>
+
+  <node pkg="cooperative_assignment"
+        type="cooperative_assignment_node"
+        name="cooperative_assignment_node"
+        output="screen"/>
+</launch>

@@ -1,0 +1,5 @@
+  <launch>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find plan_manage)/rviz/default_traj.rviz" required="true" />
+    
+  
+</launch>

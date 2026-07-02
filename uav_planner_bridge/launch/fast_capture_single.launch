@@ -1,0 +1,81 @@
+<launch>
+  <arg name="uav_ns" default="target_0"/>
+  <arg name="uav_id" default="0"/>
+  <arg name="uav_count" default="6"/>
+  <arg name="map_size_x" default="80.0"/>
+  <arg name="map_size_y" default="80.0"/>
+  <arg name="map_size_z" default="20.0"/>
+  <arg name="odom_topic" default="/$(arg uav_ns)/odom"/>
+  <arg name="goal_topic" default="/$(arg uav_ns)/planning_goal"/>
+  <arg name="trajectory_topic" default="/$(arg uav_ns)/fast_capture_trajectory"/>
+  <arg name="planned_path_topic" default="/$(arg uav_ns)/planned_path"/>
+  <arg name="global_map_topic" default="/global_map"/>
+
+  <node pkg="uav_planner_bridge"
+        type="planning_goal_to_odometry_node"
+        name="$(arg uav_ns)_goal_to_odometry"
+        output="screen">
+    <remap from="~planning_goal" to="$(arg goal_topic)"/>
+    <remap from="~target_odom" to="/$(arg uav_ns)/fast_capture_goal_odom"/>
+  </node>
+
+  <node pkg="plan_manage"
+        type="tracking_fsm_node"
+        name="$(arg uav_ns)_fast_capture_planner"
+        output="screen">
+    <remap from="~odom" to="$(arg odom_topic)"/>
+    <remap from="~mean_estimator_target" to="/$(arg uav_ns)/fast_capture_goal_odom"/>
+    <remap from="~trajectory" to="$(arg trajectory_topic)"/>
+    <remap from="~grid_map/odom" to="$(arg odom_topic)"/>
+    <remap from="~grid_map/cloud" to="$(arg global_map_topic)"/>
+    <remap from="~grid_map/occupancy" to="/$(arg uav_ns)/grid_map/occupancy"/>
+    <remap from="~grid_map/occupancy_inflate" to="/$(arg uav_ns)/grid_map/occupancy_inflate"/>
+    <remap from="~grid_map/unknown" to="/$(arg uav_ns)/grid_map/unknown"/>
+
+    <param name="drone_id_" value="$(arg uav_id)"/>
+    <param name="drone_num_" value="$(arg uav_count)"/>
+    <param name="traj/vmax" value="8.0"/>
+    <param name="traj/amax" value="4.0"/>
+    <param name="search/max_tau" value="0.3"/>
+    <param name="search/init_max_tau" value="0.8"/>
+    <param name="search/max_vel" value="8.0"/>
+    <param name="search/max_acc" value="4.0"/>
+    <param name="search/w_time" value="1.0"/>
+    <param name="search/lambda_heu" value="10.0"/>
+    <param name="search/check_num" value="10"/>
+    <param name="search/weight_heu_time" value="10000"/>
+
+    <param name="grid_map/resolution" value="0.2"/>
+    <param name="grid_map/map_size_x" value="$(arg map_size_x)"/>
+    <param name="grid_map/map_size_y" value="$(arg map_size_y)"/>
+    <param name="grid_map/map_size_z" value="$(arg map_size_z)"/>
+    <param name="grid_map/local_update_range_x" value="10.0"/>
+    <param name="grid_map/local_update_range_y" value="10.0"/>
+    <param name="grid_map/local_update_range_z" value="10.0"/>
+    <param name="grid_map/obstacles_inflation" value="0.3"/>
+    <param name="grid_map/local_map_margin" value="30"/>
+    <param name="grid_map/ground_height" value="0.0"/>
+    <param name="grid_map/p_hit" value="0.65"/>
+    <param name="grid_map/p_miss" value="0.35"/>
+    <param name="grid_map/p_min" value="0.12"/>
+    <param name="grid_map/p_max" value="0.90"/>
+    <param name="grid_map/p_occ" value="0.80"/>
+    <param name="grid_map/min_ray_length" value="0.1"/>
+    <param name="grid_map/max_ray_length" value="10.0"/>
+    <param name="grid_map/virtual_ceil_height" value="$(arg map_size_z)"/>
+    <param name="grid_map/visualization_truncate_height" value="$(arg map_size_z)"/>
+    <param name="grid_map/show_occ_time" value="false"/>
+    <param name="grid_map/pose_type" value="1"/>
+    <param name="grid_map/frame_id" value="world"/>
+  </node>
+
+  <node pkg="uav_planner_bridge"
+        type="polynomial_trajectory_to_path_node"
+        name="$(arg uav_ns)_trajectory_to_path"
+        output="screen">
+    <remap from="~trajectory" to="$(arg trajectory_topic)"/>
+    <remap from="~planned_path" to="$(arg planned_path_topic)"/>
+    <param name="world_frame" value="world"/>
+    <param name="sample_dt" value="0.05"/>
+  </node>
+</launch>

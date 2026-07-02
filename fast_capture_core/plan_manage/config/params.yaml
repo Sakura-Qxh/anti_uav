@@ -1,0 +1,25 @@
+num_drones: 4
+window_size: 20
+buffer_size: 200
+publish_rate: 20.0
+
+# 相邻和近邻的相对边
+relative_max_gap: 2
+
+# 平均观测噪声
+measurement_noise_std: 0.1
+
+# 相对测量噪声
+relative_noise_std: 0.1
+
+# 三类因子权重（信息矩阵 = weight * I）
+prior_weight: 10.0
+measurement_weight: 10.0
+relative_weight: 5.0
+
+enable_verbose: false
+
+# （可选）给原始无人机观测加一点噪声做实验
+noise_std_x: 0.0
+noise_std_y: 0.0
+noise_std_z: 0.0

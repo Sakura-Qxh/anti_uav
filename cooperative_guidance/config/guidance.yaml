@@ -1,0 +1,17 @@
+world_frame: "world"
+target_count: 6
+interceptor_count: 6
+update_rate: 10.0
+
+assignment_topic: "/assignment/result"
+goal_prefix: "/interceptor_"
+target_prefix: "/target_"
+
+stale_timeout: 2.0
+capture_radius: 8.0
+vertical_offset: 0.0
+lead_time: 1.0
+min_goal_altitude: 2.0
+
+marker_scale: 0.8
+line_width: 0.12

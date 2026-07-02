@@ -1,0 +1,10 @@
+<launch>
+  <arg name="config_file" default="$(find threat_assessment)/config/threat_assessment.yaml"/>
+
+  <rosparam file="$(arg config_file)" command="load" ns="/threat_assessment_node"/>
+
+  <node pkg="threat_assessment"
+        type="threat_assessment_node"
+        name="threat_assessment_node"
+        output="screen"/>
+</launch>

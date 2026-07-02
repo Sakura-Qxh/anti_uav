@@ -1,0 +1,140 @@
+<launch>
+  <arg name="map_size_x_"/>
+  <arg name="map_size_y_"/>
+  <arg name="map_size_z_"/>
+  <arg name="init_x"/>
+  <arg name="init_y"/>
+  <arg name="init_z"/>
+  <arg name="drone_id"/>
+  <arg name="drone_num"/>
+
+  <node pkg="traj_server" type="traj_server_node" name="drone_$(arg drone_id)_traj_server" output="screen" launch-prefix="">
+        <remap from="~/position_command" to="/drone_$(arg drone_id)_position_cmd"/>
+        <!-- <remap from="~/odometry" to="/vins_estimator/imu_propagate"/> -->
+        <remap from="~/odometry"      to="/drone_$(arg drone_id)_visual_slam/odom"/>
+        <remap from="~/trajectory" to="/drone_$(arg drone_id)_trajectory"/>
+        <remap from="~/mytarget_height" to="/drone_$(arg drone_id)_tracking_fsm_node/mytarget_height"/>
+        <remap from="~front_pos_forpredict"     to=  "/drone_$(arg drone_id)_drone_node/front_pos_forpredict" />
+        <param name="drone_id"   value="$(arg drone_id)" /> 
+        <param name="drone_num"   value="$(arg drone_num)" /> 
+	</node>
+
+  <node pkg="target_detection" type="sim_detect_node" name="drone_$(arg drone_id)_sim_detect_node" output="screen">
+    <remap from="~car_state_detect"       to = "/car_state"/>
+    <remap from="~global_map"       to = "/global_map"/>
+    <remap from="~drone_odom"       to = "/drone_$(arg drone_id)_visual_slam/odom"/>
+    <remap from="~target"       to = "/drone_$(arg drone_id)_target"/>
+
+    <param name="grid_map/resolution"      value="0.1" /> 
+    <param name="grid_map/map_size_x"   value="$(arg map_size_x_)" /> 
+    <param name="grid_map/map_size_y"   value="$(arg map_size_y_)" /> 
+    <param name="grid_map/map_size_z"   value="$(arg map_size_z_)" /> 
+  </node>
+
+  <!-- <node pkg="ukf" type="target_estimator_node" name="drone_$(arg drone_id)_target_estimator_node" output="screen">
+    <remap from="~target"       to = "/drone_$(arg drone_id)_target"/>
+    <remap from="~estimator_target"       to = "/drone_$(arg drone_id)_estimator_target"/>
+    <remap from="~ukf_estimated_trajectory"       to = "/drone_$(arg drone_id)_ukf_estimated_trajectory"/>
+    <remap from="~measurement_cov"       to = "/drone_$(arg drone_id)_measurement_cov"/>
+  </node> -->
+
+  <node pkg="plan_manage" type="tracking_fsm_node" name="drone_$(arg drone_id)_tracking_fsm_node" output="screen">
+    <remap from="~mean_estimator_target"       to = "/drone_$(arg drone_id)_roundup_target"/>
+    <!-- <remap from="~mean_estimator_target"       to = "/mean_estimator_target"/> -->
+    <remap from="~odom"            to="/drone_$(arg drone_id)_visual_slam/odom"/>
+    <remap from="~trajectory"     to=  "/drone_$(arg drone_id)_trajectory" />
+    <param name="drone_id_"   value="$(arg drone_id)" /> 
+    <param name="drone_num_"   value="$(arg drone_num)" /> 
+    <remap from="~drone_0_visual_slam/odom"     to=  "/drone_0_visual_slam/odom" />
+    <remap from="~drone_1_visual_slam/odom"     to=  "/drone_1_visual_slam/odom" />
+    <remap from="~drone_2_visual_slam/odom"     to=  "/drone_2_visual_slam/odom" />
+    <remap from="~drone_3_visual_slam/odom"     to=  "/drone_3_visual_slam/odom" />
+    <remap from="~drone_0_trajectory"     to=  "/drone_0_trajectory" />
+    <remap from="~drone_1_trajectory"     to=  "/drone_1_trajectory" />
+    <remap from="~drone_2_trajectory"     to=  "/drone_2_trajectory" />
+    <remap from="~drone_3_trajectory"     to=  "/drone_3_trajectory" />
+    <!-- <remap from="/grid_map/odom" to="/drone_$(arg drone_id)_visual_slam/odom"/>
+    <remap from="/grid_map/cloud" to="/drone_$(arg drone_id)_pcl_render_node/cloud"/>
+    <remap from = "/grid_map/pose"   to = "/drone_$(arg drone_id)_pcl_render_node/camera_pose"/> 
+    <remap from = "/grid_map/depth" to = "/drone_$(arg drone_id)_pcl_render_node/depth"/> -->
+
+    <remap from="~grid_map/odom" to="/drone_$(arg drone_id)_visual_slam/odom"/>
+    <remap from="~grid_map/cloud" to="/drone_$(arg drone_id)_pcl_render_node/pcl_render_node/cloud"/>
+    <remap from = "~grid_map/pose"   to = "/drone_$(arg drone_id)_pcl_render_node/camera_pose"/> 
+    <remap from = "~grid_map/depth" to = "/drone_$(arg drone_id)_pcl_render_node/depth"/>
+
+    <remap from = "~grid_map/occupancy" to = "/drone_$(arg drone_id)_grid_map/occupancy"/>
+    <remap from = "~grid_map/occupancy_inflate" to = "/drone_$(arg drone_id)_grid_map/occupancy_inflate"/>
+    <remap from = "~grid_map/unknown" to = "/drone_$(arg drone_id)_grid_map/unknown"/>
+
+    <param name="traj/vmax"  value = "4.5"/>
+    <param name="traj/amax"  value = "1.5"/>
+    <!-- kino search -->
+    <param name="search/max_tau"  value = "0.3"/>
+    <param name="search/init_max_tau" value = "0.8"/>
+    <param name="search/max_vel"  value = "5.0" />
+    <param name="search/max_acc"  value = "4.0"/>
+    <param name="search/w_time"  value = "1.0"/>
+    <param name="search/lambda_heu" value = "10.0"/>
+    <param name="search/check_num"  value = "10"/>   
+    <param name="search/weight_heu_time"  value = "10000"/>   
+    <!-- sensing part -->
+    <param name="grid_map/resolution"      value="0.1" /> 
+    <param name="grid_map/map_size_x"   value="$(arg map_size_x_)" /> 
+    <param name="grid_map/map_size_y"   value="$(arg map_size_y_)" /> 
+    <param name="grid_map/map_size_z"   value="$(arg map_size_z_)" /> 
+    <param name="grid_map/local_update_range_x"  value="5.0" /> 
+    <param name="grid_map/local_update_range_y"  value="5.0" /> 
+    <param name="grid_map/local_update_range_z"  value="5.0" /> 
+    <param name="grid_map/obstacles_inflation"     value="0.099" /> 
+    <param name="grid_map/local_map_margin" value="30"/>
+    <param name="grid_map/ground_height"        value="-0.01"/>
+    <!-- camera parameter -->
+    <param name="grid_map/cx" value="319.3750915527344"/>
+    <param name="grid_map/cy" value="241.12332153320312"/>
+    <param name="grid_map/fx" value="385.2784729003906"/>
+    <param name="grid_map/fy" value="385.2784729003906"/>
+    <!-- depth filter -->
+    <param name="grid_map/use_depth_filter" value="true"/>
+    <param name="grid_map/depth_filter_tolerance" value="0.15"/>
+    <param name="grid_map/depth_filter_maxdist"   value="5.0"/>
+    <param name="grid_map/depth_filter_mindist"   value="0.2"/>
+    <param name="grid_map/depth_filter_margin"    value="2"/>
+    <param name="grid_map/k_depth_scaling_factor" value="1000.0"/>
+    <param name="grid_map/skip_pixel" value="2"/>
+    <!-- local fusion -->
+    <param name="grid_map/p_hit"  value="0.65"/>
+    <param name="grid_map/p_miss" value="0.35"/>
+    <param name="grid_map/p_min"  value="0.12"/>
+    <param name="grid_map/p_max"  value="0.90"/>
+    <param name="grid_map/p_occ"  value="0.80"/>
+    <param name="grid_map/min_ray_length" value="0.1"/>
+    <param name="grid_map/max_ray_length" value="4.5"/>
+
+    <param name="grid_map/virtual_ceil_height"   value="2.5"/>
+    <param name="grid_map/visualization_truncate_height"   value="2.4"/>
+    <param name="grid_map/show_occ_time"  value="false"/>
+    <param name="grid_map/pose_type"     value="1"/>  
+    <param name="grid_map/frame_id"      value="world"/>
+
+    
+
+  </node>
+
+  <include file="$(find plan_manage)/launch/RoundUp_simulator.xml">
+    <arg name="drone_id" value="$(arg drone_id)"/>
+    <arg name="init_x" value="$(arg init_x)"/>
+    <arg name="init_y" value="$(arg init_y)"/>
+    <arg name="init_z" value="$(arg init_z)"/>
+    <arg name="map_size_x_" value="$(arg map_size_x_)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y_)"/>
+    <arg name="map_size_z_" value="$(arg map_size_z_)"/>
+    <arg name="c_num" value="10"/>
+    <arg name="p_num" value="80"/>
+
+  </include>
+
+
+    <!-- use simulator -->
+  
+  </launch>

@@ -1,0 +1,19 @@
+world_frame: "world"
+uav_id: 0
+role: "target"
+update_rate: 50.0
+
+max_speed: 8.0
+path_reach_radius: 1.0
+path_max_points: 1500
+
+init_pos: [0.0, 0.0, 10.0]
+
+mesh_resource: "package://target_scenario_generator/meshes/hummingbird.mesh"
+mesh_scale: 1.0
+
+color:
+  r: 1.0
+  g: 0.2
+  b: 0.05
+  a: 1.0

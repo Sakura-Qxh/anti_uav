@@ -1,0 +1,12 @@
+world_frame: "world"
+mode: "target"
+uav_count: 6
+uav_prefix: "/target_"
+
+update_rate: 5.0
+path_points: 80
+min_replan_interval: 0.5
+replan_distance_threshold: 1.0
+
+global_map_topic: "/global_map"
+attack_goal_topic: "/target_scenario/attack_goal"

@@ -1,0 +1,9 @@
+world_frame: "world"
+publish_rate: 5.0
+
+control_mode: "rviz_click"
+clicked_point_topic: "/clicked_point"
+output_goal_topic: "/target_scenario/attack_goal"
+
+default_attack_goal: [0.0, 0.0, 8.0]
+target_goal_altitude: 8.0

@@ -1,0 +1,204 @@
+  <launch>
+    <arg name="map_size_x_" value="70.0"/>
+    <arg name="map_size_y_" value="70.0"/>
+    <arg name="map_size_z_" value="5.0"/>
+    <arg name="drone_num" value="4"/>
+    <!-- <arg name="map_size_x_" value="42.0"/>
+    <arg name="map_size_y_" value="40.0"/>
+    <arg name="map_size_z_" value="5.0"/> -->
+
+    <arg name="num_drones" default="4" />
+
+
+    <arg name="config_file" default="$(find roundup_formation)/config/params.yaml"/>
+
+    <!-- ==================== Yaw Planner Node ==================== -->
+    <!-- 优化权重参数 -->
+    <arg name="yaw_weight" default="1.0" doc="Outward alignment cost weight"/>
+    <arg name="vis_weight" default="10.0" doc="Visibility cost weight"/>
+    <arg name="sm_weight" default="0.1" doc="Smoothness cost weight"/>
+    
+    <!-- FOV参数 -->
+    <arg name="fov_horizontal_deg" default="86.0" doc="Horizontal FOV in degrees"/>
+    <arg name="fov_vertical_deg" default="57.0" doc="Vertical FOV in degrees (for cone visualization)"/>
+    <arg name="safety_margin_deg" default="8.0" doc="Safety margin for FOV constraint in degrees"/>
+    <arg name="fov_ray_length" default="1.8" doc="Length of FOV rays in RViz"/>
+    <arg name="fov_line_width" default="0.03" doc="Width of FOV boundary lines"/>
+    <arg name="cone_alpha" default="0.03" doc="Transparency of FOV cone (0-1)"/>
+    
+    
+    <!-- 求解器参数 -->
+    <arg name="max_iterations" default="50" doc="Maximum Ceres solver iterations"/>
+    
+    <!-- 定时器参数 -->
+    <arg name="timer_period" default="0.1" doc="Timer callback period in seconds"/>
+    
+    <!-- 坐标系 -->
+    <arg name="world_frame" default="world" doc="World frame ID for visualization"/>
+    
+    <!-- 话题名称配置 -->
+    <arg name="drone_odom_topic_prefix" default="/drone_" doc="Prefix for drone odometry topics"/>
+    <arg name="drone_odom_topic_suffix" default="_visual_slam/odom" doc="Suffix for drone odometry topics"/>
+    <arg name="target_topic" default="/fxxzxec_estimator_target_target" doc="Target position topic"/>
+    <arg name="center_topic" default="/mean_center_target" doc="Formation center topic"/>
+    <arg name="yaw_cmd_topic_suffix" default="/yaw_cmd" doc="Suffix for yaw command topics"/>
+    <!-- ==================== Yaw Planner Node ==================== -->
+
+    <!-- random map -->
+    <node pkg ="map_generator" name ="random_forest_random" type ="random_forest_random" output = "screen">    
+        <param name="map/x_size"     value="$(arg map_size_x_)" />
+        <param name="map/y_size"     value="$(arg map_size_y_)" />
+        <param name="map/z_size"     value="$(arg map_size_z_)" />
+        <param name="map/resolution" value="0.1"/>        
+
+        <param name="ObstacleShape/seed" value="1"/>
+        
+        <param name="map/obs_num"    value="100"/>
+        <!-- <param name="map/obs_num"    value="175"/> -->
+        <param name="ObstacleShape/lower_rad" value="1.0"/>
+        <param name="ObstacleShape/upper_rad" value="1.3"/>
+        <param name="ObstacleShape/lower_hei" value="0.5"/>
+        <param name="ObstacleShape/upper_hei" value="3.0"/>        
+
+        <param name="map/circle_num" value="70"/>        
+        <param name="ObstacleShape/radius_l" value="0.7"/>        
+        <param name="ObstacleShape/radius_h" value="0.5"/>        
+        <param name="ObstacleShape/z_l" value="0.7"/>        
+        <param name="ObstacleShape/z_h" value="0.8"/>        
+        <param name="ObstacleShape/theta" value="0.5"/>        
+
+        <param name="sensing/radius" value="5.0"/>        
+        <param name="sensing/rate"   value="1.0"/>  
+        
+        <param name="min_distance" value="1.2"/>         
+        <remap from="/map_generator/global_cloud" to="/global_map"/>
+
+    </node>
+    <node pkg="multi_uav_target_estimator" type="multi_uav_target_estimator_node" 
+        name="multi_uav_target_estimator" output="screen">
+        </node>
+
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find plan_manage)/rviz/default_map.rviz" required="true" />
+
+
+
+ <node pkg="car_planner" type="car_node" name="car_node" output="screen">
+    <remap from="~global_map"       to = "/global_map"/>
+    <remap from="~waypoints"       to = "/move_base_simple/goal"/>
+    <remap from="~car_state"       to = "/car_state"/>
+    <param name="car/init_x"   value="0" />
+    <param name="car/init_y"   value="-1" />
+    <param name="car/init_yaw"   value="0.0" />
+    <param name="world_frame_id" value="world" type="string"/>
+    <param name="car_search/tau" value="0.15" type="double"/>
+    <param name="car_seach/velocity" value="1.5" type="double"/>
+    <param name="car_search/lambda_heu" value="1.0" type="double"/>
+    <param name="car_search/allocate_num" value="100000" type="int"/>
+    <param name="car_search/check_num" value="10" type="int"/>
+    <param name="car_search/car_l" value="1.0" type="double"/>
+    <param name="car_search/car_w" value="0.42" type="double"/>
+    <param name="car_search/car_h" value="0.29" type="double"/>
+    <param name="car_search/max_steer" value="0.7" type="double"/>
+    <param name="car_search/wheelbase" value="0.6" type="double"/>
+    <param name="car_search/yaw_resolution" value="0.17453" type="double"/>
+    <param name="car_search/check_dt" value="0.05" type="double"/>
+    <param name="car_search/frame" value="world" type="string"/>
+    <param name="car_search/resolution"      value="0.1" /> 
+    <param name="map/z_size"      value="$(arg map_size_z_)" />
+    <param name="map/y_size"      value="$(arg map_size_y_)" />
+    <param name="map/x_size"      value="$(arg map_size_x_)" />
+</node>
+
+<!-- <node pkg="ukf" type="mean_target_estimator_node" name="mean_target_estimator_node" output="screen">
+    <param name="drone_num"      value="$(arg drone_num)" />
+  </node> -->
+
+<node pkg="target_prediction" type="bezier_predict_node" name="bezier_predict_node" output="screen">
+  </node>
+
+<!-- <node pkg="roundup_controller" type="roundup_node" name="drone_roundup_node" output="screen"> 
+</node> -->
+<node pkg="roundup_formation" type="roundup_formation_node" name="roundup_formation_node"
+          output="screen">
+        
+        <rosparam file="$(arg config_file)" command="load"/>
+        
+</node>
+
+<node pkg="swarm_yaw_planner" type="yaw_planner_node" name="yaw_planner_node" output="screen">
+        <param name="yaw_weight" value="$(arg yaw_weight)"/>
+        <param name="vis_weight" value="$(arg vis_weight)"/>
+        <param name="sm_weight" value="$(arg sm_weight)"/>
+        
+        <param name="fov_horizontal_deg" value="$(arg fov_horizontal_deg)"/>
+        <param name="fov_vertical_deg" value="$(arg fov_vertical_deg)"/>
+        <param name="safety_margin_deg" value="$(arg safety_margin_deg)"/>
+        <param name="fov_ray_length" value="$(arg fov_ray_length)"/>
+        <param name="fov_line_width" value="$(arg fov_line_width)"/>
+        <param name="cone_alpha" value="$(arg cone_alpha)"/>
+        
+        <param name="num_drones" value="$(arg num_drones)"/>
+        
+        <param name="max_iterations" value="$(arg max_iterations)"/>
+        
+        <param name="timer_period" value="$(arg timer_period)"/>
+        
+        <param name="world_frame" value="$(arg world_frame)"/>
+        
+        <param name="drone_odom_topic_prefix" value="$(arg drone_odom_topic_prefix)"/>
+        <param name="drone_odom_topic_suffix" value="$(arg drone_odom_topic_suffix)"/>
+        <param name="target_topic" value="$(arg target_topic)"/>
+        <param name="center_topic" value="$(arg center_topic)"/>
+        <param name="yaw_cmd_topic_suffix" value="$(arg yaw_cmd_topic_suffix)"/>
+    </node>
+
+
+  <include file="$(find plan_manage)/launch/RoundUp_model.launch">
+      <arg name="drone_id" value="0"/>
+      <arg name="init_x" value="-1.5"/>
+      <arg name="init_y" value="0"/>
+      <arg name="init_z" value="1"/>
+      <arg name="map_size_x_" value="$(arg map_size_x_)"/>
+      <arg name="map_size_y_" value="$(arg map_size_y_)"/>
+      <arg name="map_size_z_" value="$(arg map_size_z_)"/>
+      <arg name="drone_num"      value="$(arg drone_num)" />
+  </include>
+
+  <include file="$(find plan_manage)/launch/RoundUp_model.launch">
+      <arg name="drone_id" value="3"/>
+      <arg name="init_x" value="-1.5"/>
+      <arg name="init_y" value="-3"/>
+      <arg name="init_z" value="1"/>
+      <arg name="map_size_x_" value="$(arg map_size_x_)"/>
+      <arg name="map_size_y_" value="$(arg map_size_y_)"/>
+      <arg name="map_size_z_" value="$(arg map_size_z_)"/>
+      <arg name="drone_num"      value="$(arg drone_num)" />
+  </include>
+
+  <include file="$(find plan_manage)/launch/RoundUp_model.launch">
+      <arg name="drone_id" value="1"/>
+      <arg name="init_x" value="-2.5"/>
+      <arg name="init_y" value="1.5"/>
+      <arg name="init_z" value="1"/>
+      <arg name="map_size_x_" value="$(arg map_size_x_)"/>
+      <arg name="map_size_y_" value="$(arg map_size_y_)"/>
+      <arg name="map_size_z_" value="$(arg map_size_z_)"/>
+      <arg name="drone_num"      value="$(arg drone_num)" />
+  </include>
+
+  <include file="$(find plan_manage)/launch/RoundUp_model.launch">
+      <arg name="drone_id" value="2"/>
+      <arg name="init_x" value="-2.5"/>
+      <arg name="init_y" value="-1.5"/>
+      <arg name="init_z" value="1"/>
+      <arg name="map_size_x_" value="$(arg map_size_x_)"/>
+      <arg name="map_size_y_" value="$(arg map_size_y_)"/>
+      <arg name="map_size_z_" value="$(arg map_size_z_)"/>
+      <arg name="drone_num"      value="$(arg drone_num)" />
+  </include>
+
+
+    <!-- use simulator -->
+  
+</launch>

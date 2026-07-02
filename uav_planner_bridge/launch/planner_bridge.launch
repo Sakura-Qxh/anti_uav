@@ -1,0 +1,16 @@
+<launch>
+  <arg name="mode" default="target"/>
+  <arg name="uav_prefix" default="/target_"/>
+  <arg name="uav_count" default="6"/>
+  <arg name="config_file" default="$(find uav_planner_bridge)/config/planner_bridge.yaml"/>
+
+  <node pkg="uav_planner_bridge"
+        type="planner_bridge_node"
+        name="$(arg mode)_planner_bridge"
+        output="screen">
+    <rosparam file="$(arg config_file)" command="load"/>
+    <param name="mode" value="$(arg mode)"/>
+    <param name="uav_prefix" value="$(arg uav_prefix)"/>
+    <param name="uav_count" value="$(arg uav_count)"/>
+  </node>
+</launch>

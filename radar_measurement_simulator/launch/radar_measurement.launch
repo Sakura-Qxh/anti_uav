@@ -1,0 +1,10 @@
+<launch>
+  <arg name="config_file" default="$(find radar_measurement_simulator)/config/radar_sim.yaml"/>
+
+  <rosparam file="$(arg config_file)" command="load" ns="/radar_measurement_node"/>
+
+  <node pkg="radar_measurement_simulator"
+        type="radar_measurement_node"
+        name="radar_measurement_node"
+        output="screen"/>
+</launch>

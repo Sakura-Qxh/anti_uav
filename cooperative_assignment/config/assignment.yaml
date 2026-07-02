@@ -1,0 +1,31 @@
+world_frame: "world"
+target_count: 6
+interceptor_count: 6
+update_rate: 5.0
+
+max_interceptors_per_target: 3
+high_threat_threshold: 0.70
+medium_threat_threshold: 0.40
+high_threat_interceptors: 3
+medium_threat_interceptors: 2
+low_threat_interceptors: 1
+
+interceptor_speed: 30.0
+max_assignment_distance: 300.0
+stale_timeout: 2.0
+
+cost_distance_weight: 0.55
+cost_time_weight: 0.35
+cost_threat_weight: 0.45
+
+interceptors:
+  "0": [-45.0, -30.0, 6.0]
+  "1": [-45.0,  30.0, 6.0]
+  "2": [-25.0, -45.0, 6.0]
+  "3": [-25.0,  45.0, 6.0]
+  "4": [ -5.0, -35.0, 6.0]
+  "5": [ -5.0,  35.0, 6.0]
+
+interceptor_marker_scale: 1.0
+line_width: 0.18
+text_height: 1.2

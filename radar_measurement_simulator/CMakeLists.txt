@@ -1,0 +1,51 @@
+cmake_minimum_required(VERSION 3.0.2)
+project(radar_measurement_simulator)
+
+add_compile_options(-std=c++14)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  nav_msgs
+  geometry_msgs
+  visualization_msgs
+  std_msgs
+)
+
+find_package(Boost REQUIRED COMPONENTS system)
+
+catkin_package(
+  CATKIN_DEPENDS roscpp nav_msgs geometry_msgs visualization_msgs std_msgs
+)
+
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+)
+
+add_executable(radar_measurement_node
+  src/radar_measurement_node.cpp
+)
+
+add_dependencies(radar_measurement_node
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS}
+)
+
+target_link_libraries(radar_measurement_node
+  ${catkin_LIBRARIES}
+  /usr/local/lib/libboost_system.so
+)
+
+install(TARGETS radar_measurement_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+)
+
+install(DIRECTORY config/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+)

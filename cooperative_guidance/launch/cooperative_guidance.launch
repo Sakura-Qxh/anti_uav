@@ -1,0 +1,10 @@
+<launch>
+  <arg name="config_file" default="$(find cooperative_guidance)/config/guidance.yaml"/>
+
+  <rosparam file="$(arg config_file)" command="load" ns="/cooperative_guidance_node"/>
+
+  <node pkg="cooperative_guidance"
+        type="cooperative_guidance_node"
+        name="cooperative_guidance_node"
+        output="screen"/>
+</launch>
