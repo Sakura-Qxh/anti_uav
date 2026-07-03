@@ -1,16 +1,35 @@
 <launch>
   <arg name="uav_ns" default="target_0"/>
 
+  <!-- 1. 目标场景：发布 /attack_goal -->
   <include file="$(find target_scenario_generator)/launch/target_scenario.launch"/>
+
+  <!-- 2. 任务管理：/attack_goal -> /target_0/planning_goal -->
   <include file="$(find mission_manager)/launch/mission_manager.launch">
     <arg name="target_count" value="1"/>
   </include>
 
+  <!-- 3. 目标桥接：/target_0/planning_goal -> /target_0/waypoint_generator/waypoints -->
   <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
     <arg name="uav_ns" value="$(arg uav_ns)"/>
   </include>
 
-  <include file="$(find system_launch)/launch/ego_planner_unit.launch">
+  <!-- 4. 临时里程计：先给 ego-planner 一个固定初始位姿，验证能不能规划出轨迹 -->
+  <node pkg="rostopic"
+        type="rostopic"
+        name="$(arg uav_ns)_mock_odom_pub"
+        output="screen"
+        args="pub -r 30 /$(arg uav_ns)/odom nav_msgs/Odometry
+        '{header: {frame_id: world},
+          child_frame_id: base_link,
+          pose: {pose: {position: {x: 0.0, y: 0.0, z: 2.0},
+                         orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}}},
+          twist: {twist: {linear: {x: 0.0, y: 0.0, z: 0.0},
+                          angular: {x: 0.0, y: 0.0, z: 0.0}}}}'"/>
+
+  <!-- 5. 最小 EGO 规划链 -->
+  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="$(arg uav_ns)"/>
+    <arg name="odom_topic" value="/$(arg uav_ns)/odom"/>
   </include>
 </launch>
