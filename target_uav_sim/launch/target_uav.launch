@@ -5,14 +5,17 @@
   <group ns="$(arg uav_ns)">
     <rosparam file="$(arg config_file)" command="load"/>
 
-   <node pkg="target_uav_sim"
-      type="target_uav_node"
-      name="target_uav_node"
-      output="screen">
-  <param name="pos_cmd_topic" value="/$(arg uav_ns)/planning/pos_cmd"/>
-  <param name="odom_topic" value="/$(arg uav_ns)/odom"/>
-  <param name="truth_topic" value="/$(arg uav_ns)/truth"/>
-   </node>
+    <node pkg="target_uav_sim"
+          type="target_uav_node"
+          name="target_uav_node"
+          output="screen">
+      <param name="pos_cmd_topic" value="/$(arg uav_ns)/planning/pos_cmd"/>
+      <param name="odom_topic" value="/$(arg uav_ns)/odom"/>
+      <param name="truth_topic" value="/$(arg uav_ns)/truth"/>
+      <param name="target_uav/child_frame_id" value="$(arg uav_ns)/base_link"/>
+      <param name="target_uav/marker_topic" value="/$(arg uav_ns)/marker"/>
+      <param name="target_uav/marker_ns" value="$(arg uav_ns)"/>
+    </node>
 
   </group>
 </launch>

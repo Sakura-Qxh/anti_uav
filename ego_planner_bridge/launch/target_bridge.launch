@@ -1,6 +1,7 @@
 <launch>
   <arg name="uav_ns" default="target_0"/>
   <arg name="world_frame" default="world"/>
+  <arg name="enable_odom_bridge" default="false"/>
 
   <group ns="$(arg uav_ns)">
     <node pkg="ego_planner_bridge"
@@ -16,6 +17,7 @@
     <node pkg="ego_planner_bridge"
           type="odom_truth_bridge_node"
           name="odom_truth_bridge"
+          if="$(arg enable_odom_bridge)"
           output="screen">
       <param name="world_frame" value="$(arg world_frame)"/>
       <param name="child_frame_id" value="$(arg uav_ns)"/>

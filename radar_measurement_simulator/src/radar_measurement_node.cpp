@@ -33,6 +33,8 @@ public:
         pnh_.param<double>("marker_scale", marker_scale_, 0.35);
 
         targets_.resize(target_count_);
+        latest_measurements_.resize(target_count_);
+        latest_valid_.assign(target_count_, false);
         createSubscribersAndPublishers();
 
         marker_pub_ = nh_.advertise<visualization_msgs::MarkerArray>("/radar/measurements/markers", 1);

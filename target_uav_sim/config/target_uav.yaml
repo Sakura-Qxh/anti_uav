@@ -16,12 +16,12 @@ target_uav:
   track_yaw_from_cmd: true
 
   frame_id: "world"
-  child_frame_id: "target_0/base_link"
+  child_frame_id: "base_link"
 
   marker_enabled: true
-  marker_topic: "/target_0/marker"
+  marker_topic: "marker"
   marker_ns: "target_uav"
-  mesh_resource: "package://target_scenario_generator/meshes/target_uav.dae"
+  mesh_resource: "package://target_scenario_generator/meshes/hummingbird.mesh"
   mesh_use_embedded_materials: true
 
   mesh_scale_x: 1.0

@@ -14,6 +14,7 @@
   <exec_depend>target_scenario_generator</exec_depend>
   <exec_depend>mission_manager</exec_depend>
   <exec_depend>ego_planner_bridge</exec_depend>
+  <exec_depend>target_uav_sim</exec_depend>
   <exec_depend>radar_measurement_simulator</exec_depend>
   <exec_depend>robust_target_tracking</exec_depend>
   <exec_depend>threat_assessment</exec_depend>

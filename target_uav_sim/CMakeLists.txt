@@ -30,3 +30,11 @@ target_link_libraries(target_uav_node
 add_dependencies(target_uav_node
   ${catkin_EXPORTED_TARGETS}
 )
+
+install(TARGETS target_uav_node
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+install(DIRECTORY launch config
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)

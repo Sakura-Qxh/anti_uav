@@ -21,6 +21,6 @@ install(TARGETS target_attack_goal_node
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-install(DIRECTORY launch config
+install(DIRECTORY launch config meshes
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

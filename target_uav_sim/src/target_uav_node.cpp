@@ -2,7 +2,6 @@
 #include <algorithm>
 
 #include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Quaternion.h>
 #include <nav_msgs/Odometry.h>
 #include <quadrotor_msgs/PositionCommand.h>
@@ -32,7 +31,7 @@ public:
     pos_cmd_sub_ = pnh_.subscribe(pos_cmd_topic_, 10, &TargetUavNode::posCmdCallback, this);
 
     odom_pub_ = pnh_.advertise<nav_msgs::Odometry>(odom_topic_, 10);
-    truth_pub_ = pnh_.advertise<geometry_msgs::PoseStamped>(truth_topic_, 10);
+    truth_pub_ = pnh_.advertise<nav_msgs::Odometry>(truth_topic_, 10);
 
     if (marker_enabled_)
     {
@@ -184,10 +183,7 @@ private:
 
     odom_pub_.publish(odom);
 
-    geometry_msgs::PoseStamped truth;
-    truth.header = odom.header;
-    truth.pose = odom.pose.pose;
-    truth_pub_.publish(truth);
+    truth_pub_.publish(odom);
 
     if (marker_enabled_)
     {
