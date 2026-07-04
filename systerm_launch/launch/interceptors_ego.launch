@@ -37,7 +37,4 @@
   <include file="$(find ego_planner_bridge)/launch/interceptor_bridge.launch">
     <arg name="uav_ns" value="interceptor_5"/>
   </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_unit.launch">
-    <arg name="uav_ns" value="interceptor_5"/>
-  </include>
 </launch>

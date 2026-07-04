@@ -1,0 +1,29 @@
+target_uav:
+  publish_rate: 50.0
+
+  initial_x: 0.0
+  initial_y: 0.0
+  initial_z: 2.0
+  initial_yaw: 0.0
+
+  kp_pos: 2.0
+  kd_vel: 1.6
+
+  max_speed: 4.0
+  max_acc: 3.0
+  command_timeout: 0.5
+
+  track_yaw_from_cmd: true
+
+  frame_id: "world"
+  child_frame_id: "target_0/base_link"
+
+  marker_enabled: true
+  marker_topic: "/target_0/marker"
+  marker_ns: "target_uav"
+  mesh_resource: "package://target_scenario_generator/meshes/target_uav.dae"
+  mesh_use_embedded_materials: true
+
+  mesh_scale_x: 1.0
+  mesh_scale_y: 1.0
+  mesh_scale_z: 1.0
