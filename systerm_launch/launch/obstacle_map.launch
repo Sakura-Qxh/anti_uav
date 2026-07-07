@@ -1,0 +1,42 @@
+<launch>
+  <arg name="map_size_x" default="40.0"/>
+  <arg name="map_size_y" default="40.0"/>
+  <arg name="map_size_z" default="3.0"/>
+  <arg name="obs_num" default="12"/>
+  <arg name="circle_num" default="2"/>
+  <arg name="resolution" default="0.15"/>
+  <arg name="sensing_rate" default="2.0"/>
+  <arg name="global_map_topic" default="/global_map"/>
+
+  <node pkg="anti_uav_map_generator"
+        type="random_forest_random"
+        name="obstacle_map_generator"
+        output="screen">
+    <remap from="/map_generator/global_cloud" to="$(arg global_map_topic)"/>
+    <remap from="/map_generator/local_cloud" to="/obstacle_map/local_cloud"/>
+    <remap from="/pcl_render_node/local_map" to="/obstacle_map/clicked_cloud"/>
+    <remap from="odometry" to="/target_0/odom"/>
+
+    <param name="map/x_size" value="$(arg map_size_x)"/>
+    <param name="map/y_size" value="$(arg map_size_y)"/>
+    <param name="map/z_size" value="$(arg map_size_z)"/>
+    <param name="map/obs_num" value="$(arg obs_num)"/>
+    <param name="map/resolution" value="$(arg resolution)"/>
+    <param name="map/circle_num" value="$(arg circle_num)"/>
+
+    <param name="ObstacleShape/lower_rad" value="0.45"/>
+    <param name="ObstacleShape/upper_rad" value="0.95"/>
+    <param name="ObstacleShape/lower_hei" value="1.8"/>
+    <param name="ObstacleShape/upper_hei" value="2.7"/>
+
+    <param name="ObstacleShape/radius_l" value="0.5"/>
+    <param name="ObstacleShape/radius_h" value="1.0"/>
+    <param name="ObstacleShape/z_l" value="1.0"/>
+    <param name="ObstacleShape/z_h" value="2.2"/>
+    <param name="ObstacleShape/theta" value="1.57"/>
+
+    <param name="sensing/radius" value="10.0"/>
+    <param name="sensing/rate" value="$(arg sensing_rate)"/>
+    <param name="min_distance" value="3.0"/>
+  </node>
+</launch>

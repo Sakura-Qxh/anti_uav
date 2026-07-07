@@ -5,6 +5,13 @@ target_uav:
   initial_y: 0.0
   initial_z: 2.0
   initial_yaw: 0.0
+  initial_states:
+    target_0: [-14.0, -10.0, 2.0, 0.0]
+    target_1: [-14.0,  -6.0, 2.0, 0.0]
+    target_2: [-14.0,  -2.0, 2.0, 0.0]
+    target_3: [-14.0,   2.0, 2.0, 0.0]
+    target_4: [-14.0,   6.0, 2.0, 0.0]
+    target_5: [-14.0,  10.0, 2.0, 0.0]
 
   kp_pos: 2.0
   kd_vel: 1.6
@@ -22,8 +29,12 @@ target_uav:
   marker_topic: "marker"
   marker_ns: "target_uav"
   mesh_resource: "package://target_scenario_generator/meshes/hummingbird.mesh"
-  mesh_use_embedded_materials: true
+  mesh_use_embedded_materials: false
 
-  mesh_scale_x: 1.0
-  mesh_scale_y: 1.0
-  mesh_scale_z: 1.0
+  mesh_scale_x: 3.0
+  mesh_scale_y: 3.0
+  mesh_scale_z: 3.0
+  marker_color_r: 1.0
+  marker_color_g: 0.05
+  marker_color_b: 0.02
+  marker_color_a: 1.0

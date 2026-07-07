@@ -7,6 +7,7 @@
 #include <quadrotor_msgs/PositionCommand.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <visualization_msgs/Marker.h>
+#include <XmlRpcValue.h>
 
 struct Vec3
 {
@@ -58,6 +59,7 @@ private:
     pnh_.param("interceptor_uav/initial_y", initial_y_, 0.0);
     pnh_.param("interceptor_uav/initial_z", initial_z_, 2.0);
     pnh_.param("interceptor_uav/initial_yaw", initial_yaw_, 0.0);
+    loadNamespacedInitialState();
 
     pnh_.param("interceptor_uav/kp_pos", kp_pos_, 2.0);
     pnh_.param("interceptor_uav/kd_vel", kd_vel_, 1.6);
@@ -81,6 +83,51 @@ private:
     pnh_.param("interceptor_uav/mesh_scale_x", mesh_scale_x_, 1.0);
     pnh_.param("interceptor_uav/mesh_scale_y", mesh_scale_y_, 1.0);
     pnh_.param("interceptor_uav/mesh_scale_z", mesh_scale_z_, 1.0);
+    pnh_.param("interceptor_uav/marker_color_r", marker_color_r_, 0.0);
+    pnh_.param("interceptor_uav/marker_color_g", marker_color_g_, 0.35);
+    pnh_.param("interceptor_uav/marker_color_b", marker_color_b_, 1.0);
+    pnh_.param("interceptor_uav/marker_color_a", marker_color_a_, 1.0);
+  }
+
+  std::string uavName() const
+  {
+    std::string ns = ros::this_node::getNamespace();
+    if (ns.empty() || ns == "/")
+    {
+      return "";
+    }
+
+    const size_t slash = ns.find_last_of('/');
+    return slash == std::string::npos ? ns : ns.substr(slash + 1);
+  }
+
+  void loadNamespacedInitialState()
+  {
+    XmlRpc::XmlRpcValue initial_states;
+    const std::string name = uavName();
+    if (name.empty() || !pnh_.getParam("interceptor_uav/initial_states", initial_states))
+    {
+      return;
+    }
+    if (initial_states.getType() != XmlRpc::XmlRpcValue::TypeStruct || !initial_states.hasMember(name))
+    {
+      return;
+    }
+
+    XmlRpc::XmlRpcValue state = initial_states[name];
+    if (state.getType() != XmlRpc::XmlRpcValue::TypeArray || state.size() < 3)
+    {
+      ROS_WARN("Invalid initial state for %s. Expected [x, y, z] or [x, y, z, yaw].", name.c_str());
+      return;
+    }
+
+    initial_x_ = static_cast<double>(state[0]);
+    initial_y_ = static_cast<double>(state[1]);
+    initial_z_ = static_cast<double>(state[2]);
+    if (state.size() >= 4)
+    {
+      initial_yaw_ = static_cast<double>(state[3]);
+    }
   }
 
   void posCmdCallback(const quadrotor_msgs::PositionCommand::ConstPtr& msg)
@@ -200,10 +247,10 @@ private:
       marker.mesh_resource = mesh_resource_;
       marker.mesh_use_embedded_materials = mesh_use_embedded_materials_;
 
-      marker.color.r = 1.0;
-      marker.color.g = 1.0;
-      marker.color.b = 1.0;
-      marker.color.a = 1.0;
+      marker.color.r = marker_color_r_;
+      marker.color.g = marker_color_g_;
+      marker.color.b = marker_color_b_;
+      marker.color.a = marker_color_a_;
 
       marker.lifetime = ros::Duration(0.2);
       marker_pub_.publish(marker);
@@ -280,6 +327,10 @@ private:
   double mesh_scale_x_ = 1.0;
   double mesh_scale_y_ = 1.0;
   double mesh_scale_z_ = 1.0;
+  double marker_color_r_ = 0.0;
+  double marker_color_g_ = 0.35;
+  double marker_color_b_ = 1.0;
+  double marker_color_a_ = 1.0;
 
   Vec3 pos_;
   Vec3 vel_;

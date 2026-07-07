@@ -7,6 +7,7 @@
 
   <arg name="odom_topic" default="/$(arg uav_ns)/odom"/>
   <arg name="waypoints_topic" default="/$(arg uav_ns)/waypoint_generator/waypoints"/>
+  <arg name="cloud_topic" default="/global_map"/>
 
     <group ns="$(arg uav_ns)">
 
@@ -16,6 +17,7 @@
     <remap from="/grid_map/occupancy" to="/$(arg uav_ns)/grid_map/occupancy"/>
     <remap from="/grid_map/occupancy_inflate" to="/$(arg uav_ns)/grid_map/occupancy_inflate"/>
     <remap from="/grid_map/unknown" to="/$(arg uav_ns)/grid_map/unknown"/>
+    <remap from="/waypoint_generator/waypoints" to="$(arg waypoints_topic)"/>
 
   <include file="$(find ego_planner)/launch/advanced_param.xml">
       <arg name="map_size_x_" value="$(arg map_size_x)"/>
@@ -26,7 +28,7 @@
 
       <arg name="camera_pose_topic" value="/$(arg uav_ns)/unused_camera_pose"/>
       <arg name="depth_topic" value="/$(arg uav_ns)/unused_depth"/>
-      <arg name="cloud_topic" value="/$(arg uav_ns)/mock_map"/>
+      <arg name="cloud_topic" value="$(arg cloud_topic)"/>
 
       <arg name="cx" value="321.04638671875"/>
       <arg name="cy" value="243.44969177246094"/>
@@ -37,7 +39,7 @@
       <arg name="max_acc" value="3.0"/>
       <arg name="planning_horizon" value="7.5"/>
 
-      <arg name="flight_type" value="2"/>
+      <arg name="flight_type" value="1"/>
 
       <arg name="point_num" value="1"/>
 

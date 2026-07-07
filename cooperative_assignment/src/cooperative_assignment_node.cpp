@@ -39,6 +39,7 @@ struct TargetState {
 
 struct InterceptorState {
     int id = 0;
+    geometry_msgs::Point home_position;
     geometry_msgs::Point position;
     ros::Time last_odom_time;
     bool has_odom = false;
@@ -80,6 +81,7 @@ public:
         pnh_.param<double>("interceptor_marker_scale", interceptor_marker_scale_, 1.0);
         pnh_.param<double>("line_width", line_width_, 0.18);
         pnh_.param<double>("text_height", text_height_, 1.2);
+        pnh_.param<double>("ground_station_marker_altitude", ground_station_marker_altitude_, 0.2);
 
         targets_.resize(target_count_);
         loadInterceptors();
@@ -103,14 +105,15 @@ private:
             const std::string key = "interceptors/" + std::to_string(i);
             std::vector<double> pos;
             if (pnh_.getParam(key, pos) && pos.size() >= 3) {
-                interceptor.position.x = pos[0];
-                interceptor.position.y = pos[1];
-                interceptor.position.z = pos[2];
+                interceptor.home_position.x = pos[0];
+                interceptor.home_position.y = pos[1];
+                interceptor.home_position.z = pos[2];
             } else {
-                interceptor.position.x = -40.0;
-                interceptor.position.y = -30.0 + 12.0 * i;
-                interceptor.position.z = 6.0;
+                interceptor.home_position.x = -40.0;
+                interceptor.home_position.y = -30.0 + 12.0 * i;
+                interceptor.home_position.z = 2.0;
             }
+            interceptor.position = interceptor.home_position;
 
             interceptors_.push_back(interceptor);
         }
@@ -344,6 +347,9 @@ private:
         visualization_msgs::MarkerArray markers;
 
         for (const auto& interceptor : interceptors_) {
+            geometry_msgs::Point station_position = interceptor.home_position;
+            station_position.z = ground_station_marker_altitude_;
+
             visualization_msgs::Marker cube;
             cube.header.stamp = stamp;
             cube.header.frame_id = world_frame_;
@@ -351,11 +357,11 @@ private:
             cube.id = interceptor.id;
             cube.type = visualization_msgs::Marker::CUBE;
             cube.action = visualization_msgs::Marker::ADD;
-            cube.pose.position = interceptor.position;
+            cube.pose.position = station_position;
             cube.pose.orientation.w = 1.0;
             cube.scale.x = interceptor_marker_scale_;
             cube.scale.y = interceptor_marker_scale_;
-            cube.scale.z = interceptor_marker_scale_;
+            cube.scale.z = 0.5 * interceptor_marker_scale_;
             cube.color.a = 1.0;
             cube.color.r = 0.1;
             cube.color.g = interceptor.assigned ? 0.7 : 0.3;
@@ -369,7 +375,7 @@ private:
             text.id = interceptor.id;
             text.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
             text.action = visualization_msgs::Marker::ADD;
-            text.pose.position = interceptor.position;
+            text.pose.position = station_position;
             text.pose.position.z += text_height_;
             text.pose.orientation.w = 1.0;
             text.scale.z = text_height_;
@@ -398,6 +404,8 @@ private:
 
             const geometry_msgs::Point target_position =
                 targets_[interceptor.assigned_target].estimate.pose.pose.position;
+            geometry_msgs::Point station_position = interceptor.home_position;
+            station_position.z = ground_station_marker_altitude_;
 
             visualization_msgs::Marker line;
             line.header.stamp = stamp;
@@ -411,7 +419,7 @@ private:
             line.color.r = 0.2;
             line.color.g = 0.8;
             line.color.b = 1.0;
-            line.points.push_back(interceptor.position);
+            line.points.push_back(station_position);
             line.points.push_back(target_position);
             markers.markers.push_back(line);
 
@@ -422,9 +430,9 @@ private:
             label.id = label_id++;
             label.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
             label.action = visualization_msgs::Marker::ADD;
-            label.pose.position.x = 0.5 * (interceptor.position.x + target_position.x);
-            label.pose.position.y = 0.5 * (interceptor.position.y + target_position.y);
-            label.pose.position.z = 0.5 * (interceptor.position.z + target_position.z) + text_height_;
+            label.pose.position.x = 0.5 * (station_position.x + target_position.x);
+            label.pose.position.y = 0.5 * (station_position.y + target_position.y);
+            label.pose.position.z = 0.5 * (station_position.z + target_position.z) + text_height_;
             label.pose.orientation.w = 1.0;
             label.scale.z = 0.8 * text_height_;
             label.color.a = 1.0;
@@ -466,6 +474,7 @@ private:
     double interceptor_marker_scale_ = 1.0;
     double line_width_ = 0.18;
     double text_height_ = 1.2;
+    double ground_station_marker_altitude_ = 0.2;
 
     std::vector<TargetState> targets_;
     std::vector<InterceptorState> interceptors_;

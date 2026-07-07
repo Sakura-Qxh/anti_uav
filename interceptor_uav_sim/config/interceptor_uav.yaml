@@ -4,6 +4,13 @@ interceptor_uav:
   initial_y: 0.0
   initial_z: 2.0
   initial_yaw: 0.0
+  initial_states:
+    interceptor_0: [-18.0, -12.0, 2.0, 0.0]
+    interceptor_1: [-18.0,  12.0, 2.0, 0.0]
+    interceptor_2: [-14.0, -16.0, 2.0, 0.0]
+    interceptor_3: [-14.0,  16.0, 2.0, 0.0]
+    interceptor_4: [-10.0, -10.0, 2.0, 0.0]
+    interceptor_5: [-10.0,  10.0, 2.0, 0.0]
   kp_pos: 2.5
   kd_vel: 1.8
   max_speed: 6.0
@@ -15,7 +22,11 @@ interceptor_uav:
   marker_topic: "marker"
   marker_ns: "interceptor_uav"
   mesh_resource: "package://target_scenario_generator/meshes/hummingbird.mesh"
-  mesh_use_embedded_materials: true
-  mesh_scale_x: 1.0
-  mesh_scale_y: 1.0
-  mesh_scale_z: 1.0
+  mesh_use_embedded_materials: false
+  mesh_scale_x: 3.0
+  mesh_scale_y: 3.0
+  mesh_scale_z: 3.0
+  marker_color_r: 0.0
+  marker_color_g: 0.35
+  marker_color_b: 1.0
+  marker_color_a: 1.0

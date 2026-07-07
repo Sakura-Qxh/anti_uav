@@ -3,12 +3,11 @@
   <arg name="config_file" default="$(find target_uav_sim)/config/target_uav.yaml"/>
 
   <group ns="$(arg uav_ns)">
-    <rosparam file="$(arg config_file)" command="load"/>
-
     <node pkg="target_uav_sim"
           type="target_uav_node"
           name="target_uav_node"
           output="screen">
+      <rosparam file="$(arg config_file)" command="load"/>
       <param name="pos_cmd_topic" value="/$(arg uav_ns)/planning/pos_cmd"/>
       <param name="odom_topic" value="/$(arg uav_ns)/odom"/>
       <param name="truth_topic" value="/$(arg uav_ns)/truth"/>

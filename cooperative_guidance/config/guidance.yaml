@@ -8,9 +8,9 @@ goal_prefix: "/interceptor_"
 target_prefix: "/target_"
 
 stale_timeout: 2.0
-capture_radius: 8.0
+capture_radius: 4.0
 vertical_offset: 0.0
-lead_time: 1.0
+lead_time: 0.5
 min_goal_altitude: 2.0
 
 marker_scale: 0.8
