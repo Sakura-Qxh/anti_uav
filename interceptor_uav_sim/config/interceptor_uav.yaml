@@ -5,12 +5,12 @@ interceptor_uav:
   initial_z: 2.0
   initial_yaw: 0.0
   initial_states:
-    interceptor_0: [-18.0, -12.0, 2.0, 0.0]
-    interceptor_1: [-18.0,  12.0, 2.0, 0.0]
-    interceptor_2: [-14.0, -16.0, 2.0, 0.0]
-    interceptor_3: [-14.0,  16.0, 2.0, 0.0]
-    interceptor_4: [-10.0, -10.0, 2.0, 0.0]
-    interceptor_5: [-10.0,  10.0, 2.0, 0.0]
+    interceptor_0: [14.0, -10.0, 2.0, 3.14159]
+    interceptor_1: [14.0,  -6.0, 2.0, 3.14159]
+    interceptor_2: [14.0,  -2.0, 2.0, 3.14159]
+    interceptor_3: [14.0,   2.0, 2.0, 3.14159]
+    interceptor_4: [14.0,   6.0, 2.0, 3.14159]
+    interceptor_5: [14.0,  10.0, 2.0, 3.14159]
   kp_pos: 2.5
   kd_vel: 1.8
   max_speed: 6.0

@@ -210,7 +210,7 @@ private:
         }
 
         const double angle =
-            heading + kPi +
+            heading +
             2.0 * kPi * static_cast<double>(slot) / std::max(1, slot_count);
 
         geometry_msgs::PoseStamped goal;
