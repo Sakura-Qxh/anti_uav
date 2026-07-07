@@ -15,10 +15,10 @@ struct Vec3
   double z = 0.0;
 };
 
-class TargetUavNode
+class InterceptorUavNode
 {
 public:
-  TargetUavNode()
+  InterceptorUavNode()
     : nh_(), pnh_("~")
   {
     loadParams();
@@ -28,7 +28,7 @@ public:
     pos_.z = initial_z_;
     yaw_ = initial_yaw_;
 
-    pos_cmd_sub_ = pnh_.subscribe(pos_cmd_topic_, 10, &TargetUavNode::posCmdCallback, this);
+    pos_cmd_sub_ = pnh_.subscribe(pos_cmd_topic_, 10, &InterceptorUavNode::posCmdCallback, this);
 
     odom_pub_ = pnh_.advertise<nav_msgs::Odometry>(odom_topic_, 10);
     truth_pub_ = pnh_.advertise<nav_msgs::Odometry>(truth_topic_, 10);
@@ -39,9 +39,9 @@ public:
     }
 
     last_update_time_ = ros::Time::now();
-    update_timer_ = nh_.createTimer(ros::Duration(1.0 / publish_rate_), &TargetUavNode::update, this);
+    update_timer_ = nh_.createTimer(ros::Duration(1.0 / publish_rate_), &InterceptorUavNode::update, this);
 
-    ROS_INFO("target_uav_node started. pos_cmd=%s odom=%s truth=%s",
+    ROS_INFO("interceptor_uav_node started. pos_cmd=%s odom=%s truth=%s",
              pos_cmd_topic_.c_str(), odom_topic_.c_str(), truth_topic_.c_str());
   }
 
@@ -52,35 +52,35 @@ private:
     pnh_.param("odom_topic", odom_topic_, std::string("odom"));
     pnh_.param("truth_topic", truth_topic_, std::string("truth"));
 
-    pnh_.param("target_uav/publish_rate", publish_rate_, 50.0);
+    pnh_.param("interceptor_uav/publish_rate", publish_rate_, 50.0);
 
-    pnh_.param("target_uav/initial_x", initial_x_, 0.0);
-    pnh_.param("target_uav/initial_y", initial_y_, 0.0);
-    pnh_.param("target_uav/initial_z", initial_z_, 2.0);
-    pnh_.param("target_uav/initial_yaw", initial_yaw_, 0.0);
+    pnh_.param("interceptor_uav/initial_x", initial_x_, 0.0);
+    pnh_.param("interceptor_uav/initial_y", initial_y_, 0.0);
+    pnh_.param("interceptor_uav/initial_z", initial_z_, 2.0);
+    pnh_.param("interceptor_uav/initial_yaw", initial_yaw_, 0.0);
 
-    pnh_.param("target_uav/kp_pos", kp_pos_, 2.0);
-    pnh_.param("target_uav/kd_vel", kd_vel_, 1.6);
+    pnh_.param("interceptor_uav/kp_pos", kp_pos_, 2.0);
+    pnh_.param("interceptor_uav/kd_vel", kd_vel_, 1.6);
 
-    pnh_.param("target_uav/max_speed", max_speed_, 4.0);
-    pnh_.param("target_uav/max_acc", max_acc_, 3.0);
-    pnh_.param("target_uav/command_timeout", command_timeout_, 0.5);
+    pnh_.param("interceptor_uav/max_speed", max_speed_, 4.0);
+    pnh_.param("interceptor_uav/max_acc", max_acc_, 3.0);
+    pnh_.param("interceptor_uav/command_timeout", command_timeout_, 0.5);
 
-    pnh_.param("target_uav/track_yaw_from_cmd", track_yaw_from_cmd_, true);
+    pnh_.param("interceptor_uav/track_yaw_from_cmd", track_yaw_from_cmd_, true);
 
-    pnh_.param("target_uav/frame_id", frame_id_, std::string("world"));
-    pnh_.param("target_uav/child_frame_id", child_frame_id_, std::string("target_0/base_link"));
+    pnh_.param("interceptor_uav/frame_id", frame_id_, std::string("world"));
+    pnh_.param("interceptor_uav/child_frame_id", child_frame_id_, std::string("interceptor_0/base_link"));
 
-    pnh_.param("target_uav/marker_enabled", marker_enabled_, true);
-    pnh_.param("target_uav/marker_topic", marker_topic_, std::string("marker"));
-    pnh_.param("target_uav/marker_ns", marker_ns_, std::string("target_uav"));
-    pnh_.param("target_uav/mesh_resource", mesh_resource_,
+    pnh_.param("interceptor_uav/marker_enabled", marker_enabled_, true);
+    pnh_.param("interceptor_uav/marker_topic", marker_topic_, std::string("marker"));
+    pnh_.param("interceptor_uav/marker_ns", marker_ns_, std::string("interceptor_uav"));
+    pnh_.param("interceptor_uav/mesh_resource", mesh_resource_,
                std::string("package://target_scenario_generator/meshes/hummingbird.mesh"));
-    pnh_.param("target_uav/mesh_use_embedded_materials", mesh_use_embedded_materials_, true);
+    pnh_.param("interceptor_uav/mesh_use_embedded_materials", mesh_use_embedded_materials_, true);
 
-    pnh_.param("target_uav/mesh_scale_x", mesh_scale_x_, 1.0);
-    pnh_.param("target_uav/mesh_scale_y", mesh_scale_y_, 1.0);
-    pnh_.param("target_uav/mesh_scale_z", mesh_scale_z_, 1.0);
+    pnh_.param("interceptor_uav/mesh_scale_x", mesh_scale_x_, 1.0);
+    pnh_.param("interceptor_uav/mesh_scale_y", mesh_scale_y_, 1.0);
+    pnh_.param("interceptor_uav/mesh_scale_z", mesh_scale_z_, 1.0);
   }
 
   void posCmdCallback(const quadrotor_msgs::PositionCommand::ConstPtr& msg)
@@ -270,11 +270,11 @@ private:
   bool track_yaw_from_cmd_ = true;
 
   std::string frame_id_ = "world";
-  std::string child_frame_id_ = "target_0/base_link";
+  std::string child_frame_id_ = "interceptor_0/base_link";
 
   bool marker_enabled_ = true;
   std::string marker_topic_ = "marker";
-  std::string marker_ns_ = "target_uav";
+  std::string marker_ns_ = "interceptor_uav";
   std::string mesh_resource_;
   bool mesh_use_embedded_materials_ = true;
   double mesh_scale_x_ = 1.0;
@@ -298,8 +298,8 @@ private:
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "target_uav_node");
-  TargetUavNode node;
+  ros::init(argc, argv, "interceptor_uav_node");
+  InterceptorUavNode node;
   ros::spin();
   return 0;
 }

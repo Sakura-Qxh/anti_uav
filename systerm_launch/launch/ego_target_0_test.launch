@@ -9,11 +9,7 @@
     <arg name="target_count" value="1"/>
   </include>
 
-  <!-- 3. Convert /target_0/planning_goal to /target_0/waypoint_generator/waypoints -->
-  <include file="$(find ego_planner_bridge)/launch/target_bridge.launch">
-    <arg name="uav_ns" value="$(arg uav_ns)"/>
-    <arg name="enable_odom_bridge" value="false"/>
-  </include>
+
 
   <!-- 4. Target motion model: /target_0/planning/pos_cmd -> /target_0/odom and /target_0/truth -->
   <include file="$(find target_uav_sim)/launch/target_uav.launch">

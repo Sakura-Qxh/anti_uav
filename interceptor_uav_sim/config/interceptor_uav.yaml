@@ -1,0 +1,21 @@
+interceptor_uav:
+  publish_rate: 50.0
+  initial_x: -20.0
+  initial_y: 0.0
+  initial_z: 2.0
+  initial_yaw: 0.0
+  kp_pos: 2.5
+  kd_vel: 1.8
+  max_speed: 6.0
+  max_acc: 4.0
+  command_timeout: 0.5
+  frame_id: "world"
+  child_frame_id: "base_link"
+  marker_enabled: true
+  marker_topic: "marker"
+  marker_ns: "interceptor_uav"
+  mesh_resource: "package://target_scenario_generator/meshes/hummingbird.mesh"
+  mesh_use_embedded_materials: true
+  mesh_scale_x: 1.0
+  mesh_scale_y: 1.0
+  mesh_scale_z: 1.0

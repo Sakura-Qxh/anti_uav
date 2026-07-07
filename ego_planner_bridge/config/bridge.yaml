@@ -1,4 +1,0 @@
-world_frame: "world"
-latch_waypoints: true
-publish_truth: false
-latch: false

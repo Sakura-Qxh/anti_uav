@@ -1,0 +1,20 @@
+<launch>
+  <arg name="uav_ns" default="interceptor_0"/>
+  <arg name="config_file" default="$(find interceptor_uav_sim)/config/interceptor_uav.yaml"/>
+
+  <group ns="$(arg uav_ns)">
+    <rosparam file="$(arg config_file)" command="load"/>
+
+    <node pkg="interceptor_uav_sim"
+          type="interceptor_uav_node"
+          name="interceptor_uav_node"
+          output="screen">
+      <param name="pos_cmd_topic" value="/$(arg uav_ns)/planning/pos_cmd"/>
+      <param name="odom_topic" value="/$(arg uav_ns)/odom"/>
+      <param name="truth_topic" value="/$(arg uav_ns)/truth"/>
+      <param name="interceptor_uav/child_frame_id" value="$(arg uav_ns)/base_link"/>
+      <param name="interceptor_uav/marker_topic" value="/$(arg uav_ns)/marker"/>
+      <param name="interceptor_uav/marker_ns" value="$(arg uav_ns)"/>
+    </node>
+  </group>
+</launch>
