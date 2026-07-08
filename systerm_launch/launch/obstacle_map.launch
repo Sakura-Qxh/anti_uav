@@ -1,9 +1,9 @@
 <launch>
-  <arg name="map_size_x" default="40.0"/>
-  <arg name="map_size_y" default="40.0"/>
+  <arg name="map_size_x" default="70.0"/>
+  <arg name="map_size_y" default="50.0"/>
   <arg name="map_size_z" default="3.0"/>
-  <arg name="obs_num" default="12"/>
-  <arg name="circle_num" default="2"/>
+  <arg name="obs_num" default="36"/>
+  <arg name="circle_num" default="6"/>
   <arg name="resolution" default="0.15"/>
   <arg name="sensing_rate" default="2.0"/>
   <arg name="global_map_topic" default="/global_map"/>
@@ -38,5 +38,12 @@
     <param name="sensing/radius" value="10.0"/>
     <param name="sensing/rate" value="$(arg sensing_rate)"/>
     <param name="min_distance" value="3.0"/>
+
+    <param name="clear_area/target_start_x" value="-28.0"/>
+    <param name="clear_area/interceptor_start_x" value="18.0"/>
+    <param name="clear_area/attack_goal_x" value="24.0"/>
+    <param name="clear_area/y_limit" value="14.0"/>
+    <param name="clear_area/x_band" value="2.0"/>
+    <param name="clear_area/goal_radius" value="3.0"/>
   </node>
 </launch>

@@ -88,6 +88,49 @@ pcl::PointCloud<pcl::PointXYZ> cloudMap;
 sensor_msgs::PointCloud2 localMap_pcd;
 pcl::PointCloud<pcl::PointXYZ> clicked_cloud_;
 
+double clear_target_start_x_, clear_interceptor_start_x_, clear_attack_goal_x_;
+double clear_y_limit_, clear_x_band_, clear_goal_radius_;
+
+bool isInClearArea(const pcl::PointXYZ& pt) {
+    if (std::abs(pt.y) > clear_y_limit_) {
+        return false;
+    }
+
+    if (std::abs(pt.x - clear_target_start_x_) <= clear_x_band_) {
+        return true;
+    }
+
+    if (std::abs(pt.x - clear_interceptor_start_x_) <= clear_x_band_) {
+        return true;
+    }
+
+    const double dx = pt.x - clear_attack_goal_x_;
+    return std::sqrt(dx * dx + pt.y * pt.y) <= clear_goal_radius_;
+}
+
+void ApplyClearAreas() {
+    if (clear_x_band_ <= 0.0 && clear_goal_radius_ <= 0.0) {
+        return;
+    }
+
+    pcl::PointCloud<pcl::PointXYZ> filtered;
+    filtered.points.reserve(cloudMap.points.size());
+
+    for (const auto& pt : cloudMap.points) {
+        if (!isInClearArea(pt)) {
+            filtered.points.push_back(pt);
+        }
+    }
+
+    const size_t removed = cloudMap.points.size() - filtered.points.size();
+    filtered.width = filtered.points.size();
+    filtered.height = 1;
+    filtered.is_dense = true;
+    cloudMap = filtered;
+
+    ROS_WARN("Cleared %zu obstacle points around UAV start lines and attack goal", removed);
+}
+
 /*
 RandomMapGenerate()：生成“极坐标型”障碍物和“圆形”障碍物。
 RandomMapGenerateCylinder()：生成带有圆柱形特征的障碍物，且在生成前会检测障碍物间的最小距离，避免重叠
@@ -191,9 +234,7 @@ void RandomMapGenerate() {
     }
 
     // 最后设置 cloudMap 的宽度、高度以及 is_dense 标志，并利用 cloudMap 构造 KD-Tree（kdtreeLocalMap），设置 _map_ok 标志为 true，表示地图生成完成。
-    cloudMap.width = cloudMap.points.size();
-    cloudMap.height = 1;
-    cloudMap.is_dense = true;
+    ApplyClearAreas();
 
     ROS_WARN("Finished generate random map ");
 
@@ -324,9 +365,7 @@ void RandomMapGenerateCylinder() {
         }
     }
 
-    cloudMap.width = cloudMap.points.size();
-    cloudMap.height = 1;
-    cloudMap.is_dense = true;
+    ApplyClearAreas();
 
     ROS_WARN("Finished generate random map ");
 
@@ -498,6 +537,12 @@ int main(int argc, char** argv) {
     n.param("sensing/rate", _sense_rate, 10.0);
 
     n.param("min_distance", _min_dist, 1.0);
+    n.param("clear_area/target_start_x", clear_target_start_x_, -28.0);
+    n.param("clear_area/interceptor_start_x", clear_interceptor_start_x_, 18.0);
+    n.param("clear_area/attack_goal_x", clear_attack_goal_x_, 24.0);
+    n.param("clear_area/y_limit", clear_y_limit_, 14.0);
+    n.param("clear_area/x_band", clear_x_band_, 2.0);
+    n.param("clear_area/goal_radius", clear_goal_radius_, 3.0);
 
     _x_l = -_x_size / 2.0;
     _x_h = +_x_size / 2.0;

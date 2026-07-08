@@ -3,4 +3,4 @@ clicked_point_topic: "/clicked_point"
 attack_goal_topic: "/attack_goal"
 publish_rate: 5.0
 default_altitude: 2.0
-default_attack_goal: [12.0, 0.0, 2.0]
+default_attack_goal: [24.0, 0.0, 2.0]
