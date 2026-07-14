@@ -1,5 +1,5 @@
 world_frame: "world"
-target_count: 6
+target_count: 3
 update_rate: 10.0
 protected_center: [0.0, 0.0, 0.0]
 protected_radius: 5.0

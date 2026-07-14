@@ -1,5 +1,5 @@
 world_frame: "world"
-target_count: 6
+target_count: 3
 update_rate: 50.0
 process_noise_position: 0.05
 process_noise_velocity: 0.5

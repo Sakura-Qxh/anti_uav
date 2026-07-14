@@ -112,30 +112,6 @@ Visualization Manager:
       Value: true
     - Class: rviz/Marker
       Enabled: true
-      Marker Topic: /target_3/marker
-      Name: target_3
-      Namespaces:
-        target_3: true
-      Queue Size: 10
-      Value: true
-    - Class: rviz/Marker
-      Enabled: true
-      Marker Topic: /target_4/marker
-      Name: target_4
-      Namespaces:
-        target_4: true
-      Queue Size: 10
-      Value: true
-    - Class: rviz/Marker
-      Enabled: true
-      Marker Topic: /target_5/marker
-      Name: target_5
-      Namespaces:
-        target_5: true
-      Queue Size: 10
-      Value: true
-    - Class: rviz/Marker
-      Enabled: true
       Marker Topic: /interceptor_0/marker
       Name: interceptor_0
       Namespaces:

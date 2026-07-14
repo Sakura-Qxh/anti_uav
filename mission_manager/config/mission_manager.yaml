@@ -1,5 +1,5 @@
 world_frame: "world"
-target_count: 6
+target_count: 3
 publish_rate: 5.0
 formation_radius: 1.5
 spread_target_goals: true

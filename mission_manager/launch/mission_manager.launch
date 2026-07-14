@@ -1,6 +1,6 @@
 <launch>
   <arg name="config_file" default="$(find mission_manager)/config/mission_manager.yaml"/>
-  <arg name="target_count" default="6"/>
+  <arg name="target_count" default="3"/>
   <arg name="interceptor_count" default="6"/>
 
   <node pkg="mission_manager"

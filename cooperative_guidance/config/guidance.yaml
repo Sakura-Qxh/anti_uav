@@ -1,5 +1,5 @@
 world_frame: "world"
-target_count: 6
+target_count: 3
 interceptor_count: 6
 update_rate: 10.0
 

@@ -20,24 +20,4 @@
     <arg name="uav_ns" value="target_2"/>
   </include>
 
-  <include file="$(find target_uav_sim)/launch/target_uav.launch">
-    <arg name="uav_ns" value="target_3"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="target_3"/>
-  </include>
-
-  <include file="$(find target_uav_sim)/launch/target_uav.launch">
-    <arg name="uav_ns" value="target_4"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="target_4"/>
-  </include>
-
-  <include file="$(find target_uav_sim)/launch/target_uav.launch">
-    <arg name="uav_ns" value="target_5"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="target_5"/>
-  </include>
 </launch>

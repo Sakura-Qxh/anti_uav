@@ -1,5 +1,5 @@
 world_frame: "world"
-target_count: 6
+target_count: 3
 position_noise_std: 0.5
 velocity_noise_std: 0.2
 random_drop_prob: 0.05

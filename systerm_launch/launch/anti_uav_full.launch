@@ -1,7 +1,7 @@
 <launch>
   <arg name="rviz" default="true"/>
   <arg name="rviz_config" default="$(find systerm_launch)/rviz/default.rviz"/>
-  <arg name="target_count" default="6"/>
+  <arg name="target_count" default="3"/>
   <arg name="interceptor_count" default="6"/>
   <arg name="global_map_topic" default="/global_map"/>
 
@@ -37,30 +37,6 @@
   </include>
   <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="target_2"/>
-    <arg name="cloud_topic" value="$(arg global_map_topic)"/>
-  </include>
-
-  <include file="$(find target_uav_sim)/launch/target_uav.launch">
-    <arg name="uav_ns" value="target_3"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="target_3"/>
-    <arg name="cloud_topic" value="$(arg global_map_topic)"/>
-  </include>
-
-  <include file="$(find target_uav_sim)/launch/target_uav.launch">
-    <arg name="uav_ns" value="target_4"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="target_4"/>
-    <arg name="cloud_topic" value="$(arg global_map_topic)"/>
-  </include>
-
-  <include file="$(find target_uav_sim)/launch/target_uav.launch">
-    <arg name="uav_ns" value="target_5"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="target_5"/>
     <arg name="cloud_topic" value="$(arg global_map_topic)"/>
   </include>
 
