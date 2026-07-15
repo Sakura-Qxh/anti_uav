@@ -121,10 +121,12 @@
   <include file="$(find threat_assessment)/launch/threat_assessment.launch"/>
   <include file="$(find cooperative_guidance)/launch/cooperative_guidance.launch"/>
 
+  <!-- Experiment CSV recording is disabled for the default full scenario.
   <include file="$(find experiment_recorder)/launch/experiment_recorder.launch">
     <arg name="target_count" value="$(arg target_count)"/>
     <arg name="interceptor_count" value="$(arg interceptor_count)"/>
   </include>
+  -->
 
   <node if="$(arg rviz)"
         pkg="rviz"
