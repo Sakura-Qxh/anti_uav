@@ -1,16 +1,14 @@
 interceptor_uav:
   publish_rate: 50.0
-  initial_x: -20.0
+  initial_x: 35.0
   initial_y: 0.0
   initial_z: 2.0
-  initial_yaw: 0.0
+  initial_yaw: 3.14159
   initial_states:
     interceptor_0: [30.0, -12.0, 2.0, 3.14159]
-    interceptor_1: [30.0,  -7.0, 2.0, 3.14159]
-    interceptor_2: [30.0,  -2.0, 2.0, 3.14159]
-    interceptor_3: [30.0,   2.0, 2.0, 3.14159]
-    interceptor_4: [30.0,   7.0, 2.0, 3.14159]
-    interceptor_5: [30.0,  12.0, 2.0, 3.14159]
+    interceptor_1: [30.0,  -4.0, 2.0, 3.14159]
+    interceptor_2: [30.0,   4.0, 2.0, 3.14159]
+    interceptor_3: [30.0,  12.0, 2.0, 3.14159]
   kp_pos: 2.5
   kd_vel: 1.8
   max_speed: 6.0

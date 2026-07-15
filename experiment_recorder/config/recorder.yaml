@@ -1,0 +1,8 @@
+world_frame: "world"
+target_count: 3
+interceptor_count: 4
+sample_period: 0.1
+path_max_points: 600
+output_directory: "/tmp/anti_uav_experiment_results"
+run_id: "scene_01_seed_01"
+

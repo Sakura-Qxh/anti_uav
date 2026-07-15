@@ -1,33 +1,26 @@
 target_uav:
   publish_rate: 50.0
-
-  initial_x: 0.0
+  initial_x: -28.0
   initial_y: 0.0
   initial_z: 2.0
   initial_yaw: 0.0
   initial_states:
-    target_0: [-28.0, -12.0, 2.0, 0.0]
-    target_1: [-28.0,  -7.0, 2.0, 0.0]
-    target_2: [-28.0,  -2.0, 2.0, 0.0]
-
+    target_0: [-25.0,  0.0,      2.0, 0.0]
+    target_1: [-29.5,  2.598076, 2.0, 0.0]
+    target_2: [-29.5, -2.598076, 2.0, 0.0]
   kp_pos: 2.0
   kd_vel: 1.6
-
   max_speed: 4.0
   max_acc: 3.0
   command_timeout: 0.5
-
   track_yaw_from_cmd: true
-
   frame_id: "world"
   child_frame_id: "base_link"
-
   marker_enabled: true
   marker_topic: "marker"
   marker_ns: "target_uav"
   mesh_resource: "package://target_scenario_generator/meshes/hummingbird.mesh"
   mesh_use_embedded_materials: false
-
   mesh_scale_x: 3.0
   mesh_scale_y: 3.0
   mesh_scale_z: 3.0

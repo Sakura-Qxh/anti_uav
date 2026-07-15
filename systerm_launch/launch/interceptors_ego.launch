@@ -27,17 +27,4 @@
     <arg name="uav_ns" value="interceptor_3"/>
   </include>
 
-  <include file="$(find interceptor_uav_sim)/launch/interceptor_uav.launch">
-  <arg name="uav_ns" value="interceptor_4"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="interceptor_4"/>
-  </include>
-
-  <include file="$(find interceptor_uav_sim)/launch/interceptor_uav.launch">
-  <arg name="uav_ns" value="interceptor_5"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="interceptor_5"/>
-  </include>
 </launch>

@@ -1,7 +1,17 @@
 world_frame: "world"
 target_count: 3
+interceptor_count: 4
 publish_rate: 5.0
-formation_radius: 1.5
+
+formation_radius: 3.0
+formation_lookahead: 8.0
+formation_heading_lock_distance: 5.0
+odom_timeout: 1.0
+goal_publish_rate: 2.0
+goal_position_threshold: 0.3
 spread_target_goals: true
+latch_waypoints: true
+
 attack_goal_topic: "/attack_goal"
 target_prefix: "/target_"
+interceptor_prefix: "/interceptor_"

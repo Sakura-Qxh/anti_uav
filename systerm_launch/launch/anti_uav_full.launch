@@ -2,10 +2,19 @@
   <arg name="rviz" default="true"/>
   <arg name="rviz_config" default="$(find systerm_launch)/rviz/default.rviz"/>
   <arg name="target_count" default="3"/>
-  <arg name="interceptor_count" default="6"/>
+  <arg name="interceptor_count" default="4"/>
+  <arg name="map_size_x" default="80.0"/>
+  <arg name="map_size_y" default="50.0"/>
+  <arg name="map_size_z" default="3.0"/>
+  <arg name="target_max_vel" default="2.0"/>
+  <arg name="interceptor_max_vel" default="3.2"/>
+  <arg name="planner_max_acc" default="3.0"/>
   <arg name="global_map_topic" default="/global_map"/>
 
   <include file="$(find systerm_launch)/launch/obstacle_map.launch">
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
     <arg name="global_map_topic" value="$(arg global_map_topic)"/>
   </include>
 
@@ -21,6 +30,11 @@
   </include>
   <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="target_0"/>
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+    <arg name="max_vel" value="$(arg target_max_vel)"/>
+    <arg name="max_acc" value="$(arg planner_max_acc)"/>
     <arg name="cloud_topic" value="$(arg global_map_topic)"/>
   </include>
 
@@ -29,6 +43,11 @@
   </include>
   <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="target_1"/>
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+    <arg name="max_vel" value="$(arg target_max_vel)"/>
+    <arg name="max_acc" value="$(arg planner_max_acc)"/>
     <arg name="cloud_topic" value="$(arg global_map_topic)"/>
   </include>
 
@@ -37,6 +56,11 @@
   </include>
   <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="target_2"/>
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+    <arg name="max_vel" value="$(arg target_max_vel)"/>
+    <arg name="max_acc" value="$(arg planner_max_acc)"/>
     <arg name="cloud_topic" value="$(arg global_map_topic)"/>
   </include>
 
@@ -45,6 +69,11 @@
   </include>
   <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="interceptor_0"/>
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+    <arg name="max_vel" value="$(arg interceptor_max_vel)"/>
+    <arg name="max_acc" value="$(arg planner_max_acc)"/>
     <arg name="cloud_topic" value="$(arg global_map_topic)"/>
   </include>
 
@@ -53,6 +82,11 @@
   </include>
   <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="interceptor_1"/>
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+    <arg name="max_vel" value="$(arg interceptor_max_vel)"/>
+    <arg name="max_acc" value="$(arg planner_max_acc)"/>
     <arg name="cloud_topic" value="$(arg global_map_topic)"/>
   </include>
 
@@ -61,6 +95,11 @@
   </include>
   <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="interceptor_2"/>
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+    <arg name="max_vel" value="$(arg interceptor_max_vel)"/>
+    <arg name="max_acc" value="$(arg planner_max_acc)"/>
     <arg name="cloud_topic" value="$(arg global_map_topic)"/>
   </include>
 
@@ -69,30 +108,23 @@
   </include>
   <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
     <arg name="uav_ns" value="interceptor_3"/>
-    <arg name="cloud_topic" value="$(arg global_map_topic)"/>
-  </include>
-
-  <include file="$(find interceptor_uav_sim)/launch/interceptor_uav.launch">
-    <arg name="uav_ns" value="interceptor_4"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="interceptor_4"/>
-    <arg name="cloud_topic" value="$(arg global_map_topic)"/>
-  </include>
-
-  <include file="$(find interceptor_uav_sim)/launch/interceptor_uav.launch">
-    <arg name="uav_ns" value="interceptor_5"/>
-  </include>
-  <include file="$(find systerm_launch)/launch/ego_planner_minimal.launch">
-    <arg name="uav_ns" value="interceptor_5"/>
+    <arg name="map_size_x" value="$(arg map_size_x)"/>
+    <arg name="map_size_y" value="$(arg map_size_y)"/>
+    <arg name="map_size_z" value="$(arg map_size_z)"/>
+    <arg name="max_vel" value="$(arg interceptor_max_vel)"/>
+    <arg name="max_acc" value="$(arg planner_max_acc)"/>
     <arg name="cloud_topic" value="$(arg global_map_topic)"/>
   </include>
 
   <include file="$(find radar_measurement_simulator)/launch/radar_measurement.launch"/>
   <include file="$(find robust_target_tracking)/launch/target_tracking.launch"/>
   <include file="$(find threat_assessment)/launch/threat_assessment.launch"/>
-  <include file="$(find cooperative_assignment)/launch/cooperative_assignment.launch"/>
   <include file="$(find cooperative_guidance)/launch/cooperative_guidance.launch"/>
+
+  <include file="$(find experiment_recorder)/launch/experiment_recorder.launch">
+    <arg name="target_count" value="$(arg target_count)"/>
+    <arg name="interceptor_count" value="$(arg interceptor_count)"/>
+  </include>
 
   <node if="$(arg rviz)"
         pkg="rviz"

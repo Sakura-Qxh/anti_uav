@@ -1,5 +1,5 @@
 <launch>
-  <arg name="map_size_x" default="70.0"/>
+  <arg name="map_size_x" default="80.0"/>
   <arg name="map_size_y" default="50.0"/>
   <arg name="map_size_z" default="3.0"/>
   <arg name="obs_num" default="36"/>
@@ -40,10 +40,10 @@
     <param name="min_distance" value="3.0"/>
 
     <param name="clear_area/target_start_x" value="-28.0"/>
-    <param name="clear_area/interceptor_start_x" value="18.0"/>
+    <param name="clear_area/interceptor_start_x" value="35.0"/>
     <param name="clear_area/attack_goal_x" value="24.0"/>
-    <param name="clear_area/y_limit" value="14.0"/>
-    <param name="clear_area/x_band" value="2.0"/>
+    <param name="clear_area/y_limit" value="16.0"/>
+    <param name="clear_area/x_band" value="4.0"/>
     <param name="clear_area/goal_radius" value="3.0"/>
   </node>
 </launch>

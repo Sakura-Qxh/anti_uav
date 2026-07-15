@@ -1,14 +1,15 @@
 <launch>
-  <arg name="config_file" default="$(find mission_manager)/config/mission_manager.yaml"/>
+  <arg name="config_file" default="$(find experiment_recorder)/config/recorder.yaml"/>
   <arg name="target_count" default="3"/>
   <arg name="interceptor_count" default="4"/>
 
-  <node pkg="mission_manager"
-        type="mission_manager_node"
-        name="mission_manager_node"
+  <node pkg="experiment_recorder"
+        type="experiment_recorder_node"
+        name="experiment_recorder_node"
         output="screen">
     <rosparam file="$(arg config_file)" command="load"/>
     <param name="target_count" value="$(arg target_count)"/>
     <param name="interceptor_count" value="$(arg interceptor_count)"/>
   </node>
 </launch>
+

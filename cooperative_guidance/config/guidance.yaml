@@ -1,17 +1,28 @@
 world_frame: "world"
 target_count: 3
-interceptor_count: 6
-update_rate: 10.0
+interceptor_count: 4
+update_rate: 20.0
 
-assignment_topic: "/assignment/result"
 goal_prefix: "/interceptor_"
 target_prefix: "/target_"
+interceptor_prefix: "/interceptor_"
+threat_prefix: "/threat/target_"
 
-stale_timeout: 2.0
-capture_radius: 4.5
-vertical_offset: 0.0
+stale_timeout: 1.0
 lead_time: 0.5
+safety_margin: 5.0
+min_radius: 8.0
+max_radius: 15.0
+angular_velocity: 0.0
+ring_entry_tolerance: 1.5
+ring_exit_tolerance: 3.5
+ring_hold_time: 1.0
+approach_reassign_timeout: 30.0
+threat_start_threshold: 0.05
 min_goal_altitude: 2.0
+goal_publish_rate: 2.0
+goal_position_threshold: 0.3
+phase_search_steps: 36
 
 marker_scale: 0.8
 line_width: 0.12

@@ -1,9 +1,11 @@
 <launch>
   <arg name="uav_ns" default="target_0"/>
 
-  <arg name="map_size_x" default="70.0"/>
+  <arg name="map_size_x" default="80.0"/>
   <arg name="map_size_y" default="50.0"/>
   <arg name="map_size_z" default="3.0"/>
+  <arg name="max_vel" default="2.0"/>
+  <arg name="max_acc" default="3.0"/>
 
   <arg name="odom_topic" default="/$(arg uav_ns)/odom"/>
   <arg name="waypoints_topic" default="/$(arg uav_ns)/waypoint_generator/waypoints"/>
@@ -35,8 +37,8 @@
       <arg name="fx" value="387.229248046875"/>
       <arg name="fy" value="387.229248046875"/>
 
-      <arg name="max_vel" value="2.0"/>
-      <arg name="max_acc" value="3.0"/>
+      <arg name="max_vel" value="$(arg max_vel)"/>
+      <arg name="max_acc" value="$(arg max_acc)"/>
       <arg name="planning_horizon" value="7.5"/>
 
       <arg name="flight_type" value="1"/>
